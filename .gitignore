@@ -1,0 +1,8 @@
+# Default ignored files
+/.idea/
+/target/
+/build
+*.iml
+/.allure/
+/allure-results/
+src/test/resources/config.properties
