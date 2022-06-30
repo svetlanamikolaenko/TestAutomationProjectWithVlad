@@ -1,4 +1,4 @@
-package com.rozetka.framework.config;
+package com.salesforce.framework.config;
 
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.ConfigFactory;

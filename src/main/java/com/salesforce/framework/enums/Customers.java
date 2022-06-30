@@ -1,7 +1,7 @@
-package com.rozetka.enums;
+package com.salesforce.framework.enums;
 
-import com.rozetka.framework.config.TestConfig;
-import com.rozetka.models.Customer;
+import com.salesforce.framework.config.TestConfig;
+import com.salesforce.framework.models.Customer;
 
 public enum Customers {
     TEST_USER(Customer.newBuilder()
