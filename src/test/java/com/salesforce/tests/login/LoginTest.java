@@ -24,7 +24,6 @@ public class LoginTest extends BaseTest {
     public void verifyLoginTest() {
         loginPage.openPage();
         homePage = loginPage.loginAs(customer);
-        String actualHomePageTitle = homePage.getTitle();
-        Assert.assertEquals(actualHomePageTitle, "Home | Salesforce", String.format("Actual page title is:  ", homePage.getTitle()));
+        Assert.assertEquals(homePage.getCaption(), "Setup Home", String.format("Actual page title is:  ", homePage.getCaption()));
     }
 }

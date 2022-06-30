@@ -6,21 +6,23 @@ import org.openqa.selenium.support.FindBy;
 
 public class BasePage extends AbstractPage {
 
-    @FindBy(xpath = "//title")
-    public WebElement title;
+    @FindBy(xpath = "//h1")
+    public WebElement caption;
 
     @Step("Get page title")
-    public String getTitle() {
-        return driver.getTitle();
+    public String getCaption() {
+        waitUntilLoaded();
+        return caption.getText();
     }
 
     @Override
     public void openPage() {
         driver.get(BASE_PAGE + "/");
+        waitUntilLoaded();
     }
 
     @Override
     protected void waitUntilLoaded() {
-        waitHelper().waitElementUntilVisible(title);
+        waitHelper().waitElementUntilVisible(caption);
     }
 }
