@@ -25,5 +25,5 @@ public abstract class AbstractPage {
      }
 
      public abstract void openPage();
-     protected abstract void waitUntilLoaded();
+     protected abstract void waitUntilLoaded() throws Exception;
 }

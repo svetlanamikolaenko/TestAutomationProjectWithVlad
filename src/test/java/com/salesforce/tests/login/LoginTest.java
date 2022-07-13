@@ -2,7 +2,7 @@ package com.salesforce.tests.login;
 
 import com.salesforce.framework.enums.Customers;
 import com.salesforce.framework.models.Customer;
-import com.salesforce.framework.pages.HomePage;
+import com.salesforce.framework.pages.SetupHomePage;
 import com.salesforce.framework.pages.LoginPage;
 import com.salesforce.tests.BaseTest;
 import org.testng.Assert;
@@ -10,9 +10,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
-    private HomePage homePage;
     private LoginPage loginPage;
-    Customer customer;
+    private Customer customer;
 
     @BeforeMethod
     public void setUp() {
@@ -23,7 +22,8 @@ public class LoginTest extends BaseTest {
     @Test(description = "User is able to login")
     public void verifyLoginTest() {
         loginPage.openPage();
-        homePage = loginPage.loginAs(customer);
-        Assert.assertEquals(homePage.getCaption(), "Setup Home", String.format("Actual page title is:  ", homePage.getCaption()));
+        SetupHomePage setupHomePage = loginPage.loginAs(customer);
+        Assert.assertEquals(setupHomePage.getHomeTitle(), "Home",
+                String.format("'Home' title should be shown"));
     }
 }

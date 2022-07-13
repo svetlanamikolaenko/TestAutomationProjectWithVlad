@@ -19,13 +19,13 @@ public class LoginPage extends BasePage {
     @FindBy(xpath = "//div[@id='theloginform']")
     private WebElement loginForm;
 
-    @Step("Enter Email")
+    @Step("Enter '{0}' Email")
     private void setEmail(String email) {
         userNameField.clear();
         userNameField.sendKeys(email);
     }
 
-    @Step("Enter Password")
+    @Step("Enter '{0}' Password")
     private void setPassword(String password) {
         passwordField.clear();
         passwordField.sendKeys(password);
@@ -37,11 +37,11 @@ public class LoginPage extends BasePage {
     }
 
     @Step("Login as customer")
-    public HomePage loginAs(Customer customer){
+    public SetupHomePage loginAs(Customer customer){
         setEmail(customer.getEmail());
         setPassword(customer.getPassword());
         clickOnLoginButton();
-        return new HomePage();
+        return new SetupHomePage();
     }
 
     @Override
