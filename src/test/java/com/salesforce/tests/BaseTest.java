@@ -5,7 +5,9 @@ import com.salesforce.framework.helpers.JavaScriptHelper;
 import com.salesforce.framework.helpers.WebDriverWaitHelper;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 import org.testng.asserts.SoftAssert;
 
 public abstract class BaseTest {
@@ -14,7 +16,7 @@ public abstract class BaseTest {
     protected WebDriverWaitHelper webDriverWaitHelper;
     protected SoftAssert softAssert;
 
-    @BeforeClass
+    @BeforeSuite
     public void setupDriver() {
         driver = Browser.getWebDriver();
         webDriverWaitHelper = new WebDriverWaitHelper();
@@ -22,7 +24,7 @@ public abstract class BaseTest {
         softAssert = new SoftAssert();
     }
 
-    @AfterClass(alwaysRun=true)
+    @AfterSuite(alwaysRun=true)
     public void closeSite() {
         javaScriptHelper.clearLocalStorageJS();
         Browser.closeWebDriver();

@@ -44,10 +44,10 @@ public class LoginPage extends BasePage {
         return new SetupHomePage();
     }
 
-    @Override
-    public void openPage() {
+    public LoginPage openLoginPage() {
         driver.get(BASE_PAGE + "/");
         waitUntilLoaded();
+        return new LoginPage();
     }
 
     @Override

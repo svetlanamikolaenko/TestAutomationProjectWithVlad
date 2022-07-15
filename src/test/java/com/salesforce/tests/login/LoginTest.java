@@ -16,14 +16,20 @@ public class LoginTest extends BaseTest {
     @BeforeMethod
     public void setUp() {
         customer = Customers.TEST_USER.getCustomer();
-        loginPage = new LoginPage();
+        loginPage = loginPage.openLoginPage();
     }
 
     @Test(description = "User is able to login")
     public void verifyLoginTest() {
-        loginPage.openPage();
         SetupHomePage setupHomePage = loginPage.loginAs(customer);
         Assert.assertEquals(setupHomePage.getHomeTitle(), "Home",
                 String.format("'Home' title should be shown"));
+    }
+
+    @Test
+    public void verifyOpeningSalesApp() throws InterruptedException {
+        SetupHomePage setupHomePage = new SetupHomePage();
+        setupHomePage.openSalesApplication();
+        Thread.sleep(10000);
     }
 }

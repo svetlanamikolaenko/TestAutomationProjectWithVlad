@@ -5,6 +5,7 @@ import com.salesforce.framework.config.TestConfig;
 import com.salesforce.framework.helpers.JavaScriptHelper;
 import com.salesforce.framework.helpers.WebDriverWaitHelper;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 public abstract class AbstractPage {
@@ -24,6 +25,5 @@ public abstract class AbstractPage {
           return new JavaScriptHelper();
      }
 
-     public abstract void openPage();
      protected abstract void waitUntilLoaded() throws Exception;
 }
