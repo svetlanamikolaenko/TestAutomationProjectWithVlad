@@ -2,13 +2,9 @@ package com.salesforce.framework.pages.sales;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 public class SalesOpportunityPage extends SalesPage{
-
-//    @FindBy (xpath = "//div[contains(@class, 'breadcrumb')]//*[text()='Opportunities']")
-//    private WebElement opportunitiesBreadcrumbLabel;
 
     @FindBy(xpath = "//*[@data-target-selection-name='sfdc:StandardButton.Opportunity.New']")
     private WebElement newOpportunityButton;
@@ -25,47 +21,71 @@ public class SalesOpportunityPage extends SalesPage{
     @FindBy(xpath = "//label[text()='Stage']/..//button[@type='button']")
     private WebElement stagePicklist;
 
-    @FindBy(xpath = "//label[text()='Stage']/..//*[@role='option'][@data-value='Needs Analysis']")
-    private WebElement needsAnalysisValue;
+    @FindBy(xpath = "//button[@name='SaveEdit']")
+    private WebElement saveOpportunityButton;
 
-    public void clickNewOpportunityButton(){
+    @FindBy(xpath = "//h1//*[@slot='primaryField']")
+    private WebElement opportunityLabel;
+
+    final String stageOptionInPicklist = "//label[text()='Stage']/..//*[@role='option'][@data-value='%s']";
+
+    @Step("Click on 'New' button")
+    public SalesOpportunityPage clickOnNewButton(){
         waitHelper().waitElementUntilVisible(newOpportunityButton);
         newOpportunityButton.click();
+        return this;
     }
 
-    public void enterOpportunityName(String opportunityName){
+    @Step("Enter 'Opportunity Name'")
+    public SalesOpportunityPage enterOpportunityName(String opportunityName){
         waitHelper().waitElementUntilVisible(newOpportunityModalWindow);
         opportunityNameTextField.clear();
         opportunityNameTextField.sendKeys(opportunityName);
+        return this;
     }
 
-    public void enterCloseDate(String closeDate){
+    @Step("Enter 'Close Date'")
+    public SalesOpportunityPage enterCloseDate(String closeDate){
         waitHelper().waitElementUntilVisible(closeDatePickerField);
         closeDatePickerField.clear();
-        closeDatePickerField.sendKeys();
+        closeDatePickerField.sendKeys(closeDate);
+        return this;
     }
 
-    public void clickOnStagePicklist(){
+    @Step("Click on 'Stage' picklist")
+    public SalesOpportunityPage clickOnStagePicklist(){
         waitHelper().waitElementUntilVisible(stagePicklist);
-        jsHelper().clickJS(stagePicklist);
+        stagePicklist.click();
+        return this;
     }
 
-
-//    @Step("Populate Stage")
-//    public SalesOpportunityPage selectStage(WebElement stage) {
-//        waitHelper().waitElementUntilVisible(stagePicklist);
-//        Actions actions = new Actions(driver);
-//        actions.click(stagePicklist)
-//                .moveToElement(stage)
-//                .click(stage)
-//                .build()
-//                .perform();
-//        return this;
-//    }
-
-    public void chooseStage(){
-        jsHelper().clickJS(needsAnalysisValue);
+    @Step("Choose option in 'Stage' picklist")
+    public SalesOpportunityPage chooseOptionInStagePicklist(String stageOption){
+        jsHelper().clickJS(findElementByXpath(String.format(stageOptionInPicklist, stageOption)));
+        return this;
     }
 
+    @Step("Click on 'Save' button")
+    public SalesOpportunityPage clickOnSaveButton(){
+        waitHelper().waitElementUntilVisible(saveOpportunityButton);
+        saveOpportunityButton.click();
+        return this;
+    }
 
+    @Step("Add new opportunity")
+    public SalesOpportunityPage addNewOpportunity(String opportunityName, String closeDate, String stageOption){
+        clickOnNewButton();
+        enterOpportunityName(opportunityName);
+        enterCloseDate(closeDate);
+        clickOnStagePicklist();
+        chooseOptionInStagePicklist(stageOption);
+        clickOnSaveButton();
+        return this;
+    }
+
+    @Step("Get Opportunity Name")
+    public String getOpportunityName(){
+        waitHelper().waitElementUntilVisible(opportunityLabel);
+        return opportunityLabel.getText();
+    }
 }

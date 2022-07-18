@@ -47,7 +47,7 @@ public class LoginPage extends BasePage {
     public LoginPage openLoginPage() {
         driver.get(BASE_PAGE + "/");
         waitUntilLoaded();
-        return new LoginPage();
+        return this;
     }
 
     @Override

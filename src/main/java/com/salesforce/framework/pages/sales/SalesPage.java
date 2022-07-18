@@ -11,21 +11,14 @@ public class SalesPage extends BasePage {
     @FindBy(xpath = "//*[contains(@class,'appName')]/span[@title='Sales']")
     private WebElement salesTitleLabel;
 
-    String salesNavItemName = "data-id='%s";
+    String salesNavItemName = "//*[contains(@class, 'navItem')]//*[text()='%s']";
 
-//    @Step("Get 'Sales' title")
-//    public String getSalesTitle() {
-//        waitUntilLoaded();
-//        return salesTitleLabel.getText();
-//    }
-
-    @Step("Open sales nav item")
+    @Step("Navigate to 'Sales' tab")
     public SalesOpportunityPage navigateToSalesTab(String navItemName){
         waitUntilLoaded();
-        findElementByXpath(String.format(salesNavItemName, navItemName)).click();
+        jsHelper().clickJS(findElementByXpath(String.format(salesNavItemName, navItemName)));
         return new SalesOpportunityPage();
     }
-
 
     @Override
     public void waitUntilLoaded(){
