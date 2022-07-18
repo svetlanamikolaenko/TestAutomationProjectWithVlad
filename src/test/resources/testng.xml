@@ -3,7 +3,7 @@
 <suite name="Regression testing Suite" verbose="1" configfailurepolicy="continue" parallel="classes" thread-count="1">
     <test name="All tests">
         <classes>
-            <class name="com.rozetka.tests.login.LoginTest"/>
+            <class name="com.salesforce.tests.login.LoginTest"/>
        </classes>
     </test>
 </suite>

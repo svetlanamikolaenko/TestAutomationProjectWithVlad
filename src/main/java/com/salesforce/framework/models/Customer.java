@@ -1,4 +1,4 @@
-package com.rozetka.models;
+package com.salesforce.framework.models;
 
 public class Customer {
     private String email;
