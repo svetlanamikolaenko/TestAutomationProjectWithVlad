@@ -182,8 +182,8 @@ public class Opportunity {
             return this;
         }
 
-        public Builder withDescription(final int val) {
-            probability = val;
+        public Builder withDescription(final String val) {
+            description = val;
             return this;
         }
 

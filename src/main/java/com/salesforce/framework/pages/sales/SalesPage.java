@@ -13,10 +13,10 @@ public class SalesPage extends BasePage {
     String salesTabName = "//*[contains(@class, 'navItem')]//*[text()='%s']";
 
     @Step("Navigate to 'Sales' tab")
-    public SalesOpportunitiesListPage navigateToSalesTab(String tabName){
+    public SalesOpportunitiesRecentlyViewedPage navigateToSalesTab(String tabName){
         waitUntilLoaded();
         jsHelper().clickJS(findElementByXpath(String.format(salesTabName, tabName)));
-        return new SalesOpportunitiesListPage();
+        return new SalesOpportunitiesRecentlyViewedPage();
     }
 
     @Override
