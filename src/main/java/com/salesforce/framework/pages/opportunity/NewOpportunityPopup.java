@@ -1,14 +1,11 @@
-package com.salesforce.framework.pages.sales;
+package com.salesforce.framework.pages.opportunity;
 
 import com.salesforce.framework.models.Opportunity;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class SalesOpportunitiesRecentlyViewedPage extends SalesPage{
-
-    @FindBy(xpath = "//*[@data-target-selection-name='sfdc:StandardButton.Opportunity.New']")
-    private WebElement newOpportunityButton;
+public class NewOpportunityPopup extends OpportunitiesPage{
 
     @FindBy (xpath = "//div[contains(@class, 'modal')]//h2[text()='New Opportunity']")
     private WebElement newOpportunityModalWindow;
@@ -53,60 +50,61 @@ public class SalesOpportunitiesRecentlyViewedPage extends SalesPage{
     private WebElement stagePicklist;
 
     @FindBy(xpath = "//label[text()='Delivery/Installation Status']/..//button[@type='button']")
-    private WebElement deliveryStatusPicklist;
+    private WebElement deliveryInstallationStatusPicklist;
 
     @FindBy(xpath = "//button[@name='SaveEdit']")
     private WebElement saveOpportunityButton;
 
-    final String valueInPicklist = "//*[@role='option'][@data-value='%s']";
+    private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@role='option'][@data-value='%s']";
+    private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']//..//input[@type='text']";
 
-    @Step("Click on 'New' button")
-    public SalesOpportunitiesRecentlyViewedPage clickOnNewButton(){
-        waitHelper().waitElementUntilVisible(newOpportunityButton);
-        newOpportunityButton.click();
+    public NewOpportunityPopup enterValuesInField(String fieldLabel, String value){
+        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_FORMAT, fieldLabel));
+        findElementByXpath(String.format(INPUT_FIELD_FORMAT, fieldLabel)).clear();
+        findElementByXpath(String.format(INPUT_FIELD_FORMAT, fieldLabel)).sendKeys(value);
         return this;
     }
 
     @Step("Enter 'Opportunity Name'")
-    public SalesOpportunitiesRecentlyViewedPage enterOpportunityName(String opportunityName){
-        waitHelper().waitElementUntilVisible(newOpportunityModalWindow);
+    public NewOpportunityPopup enterOpportunityName(String opportunityName){
+        waitUntilLoaded();
         opportunityNameTextField.clear();
         opportunityNameTextField.sendKeys(opportunityName);
         return this;
     }
 
     @Step("Enter 'Close Date'")
-    public SalesOpportunitiesRecentlyViewedPage enterCloseDate(String closeDate){
+    public NewOpportunityPopup enterCloseDate(String closeDate){
         waitHelper().waitElementUntilVisible(closeDatePickerField);
         closeDatePickerField.clear();
         closeDatePickerField.sendKeys(closeDate);
         return this;
     }
 
-
     @Step("Click on 'Stage' picklist")
-    public SalesOpportunitiesRecentlyViewedPage clickOnStagePicklist(){
+    public NewOpportunityPopup clickOnStagePicklist(){
         waitHelper().waitElementUntilVisible(stagePicklist);
         stagePicklist.click();
         return this;
     }
 
     @Step("Choose '{0}' option in picklist")
-    public SalesOpportunitiesRecentlyViewedPage chooseOptionInPicklist(String option){
-        jsHelper().clickJS(findElementByXpath(String.format(valueInPicklist, option)));
+    public NewOpportunityPopup chooseOptionInPicklist(String option){
+        waitHelper().waitLocatorUntilVisible(String.format(VALUE_IN_PICKLIST_FORMAT, option));
+        jsHelper().clickJS(findElementByXpath(String.format(VALUE_IN_PICKLIST_FORMAT, option)));
         return this;
     }
 
     @Step("Click on 'Save' button")
-    public SalesOpportunityRecordPage clickOnSaveButton(){
+    public OpportunityHeaderPage clickOnSaveButton(){
         waitHelper().waitElementUntilVisible(saveOpportunityButton);
         saveOpportunityButton.click();
-        return new SalesOpportunityRecordPage();
+        return new OpportunityHeaderPage();
     }
 
     @Step("Enter all required fields in the new opportunity")
-    public SalesOpportunitiesRecentlyViewedPage enterAllRequiredFields(Opportunity opportunity){
-        clickOnNewButton();
+    public NewOpportunityPopup enterAllRequiredFields(Opportunity opportunity){
+        waitUntilLoaded();
         enterOpportunityName(opportunity.getName());
         enterCloseDate(opportunity.getCloseDate());
         clickOnStagePicklist();
@@ -115,63 +113,63 @@ public class SalesOpportunitiesRecentlyViewedPage extends SalesPage{
     }
 
     @Step("Enter 'Amount'")
-    public SalesOpportunitiesRecentlyViewedPage enterAmount(Opportunity opportunity){
+    public NewOpportunityPopup enterAmount(Opportunity opportunity){
         amountField.clear();
         amountField.sendKeys(String.valueOf(opportunity.getAmount()));
         return this;
     }
 
     @Step("Enter 'Next Step'")
-    public SalesOpportunitiesRecentlyViewedPage enterNextStep(Opportunity opportunity){
+    public NewOpportunityPopup enterNextStep(Opportunity opportunity){
         nextStepTextField.clear();
         nextStepTextField.sendKeys(opportunity.getNextStep());
         return this;
     }
 
     @Step("Enter 'Order Number'")
-    public SalesOpportunitiesRecentlyViewedPage enterOrderNumber(Opportunity opportunity){
+    public NewOpportunityPopup enterOrderNumber(Opportunity opportunity){
         orderNumberField.clear();
         orderNumberField.sendKeys(String.valueOf(opportunity.getOrderNumber()));
         return this;
     }
 
     @Step("Enter 'Probability'")
-    public SalesOpportunitiesRecentlyViewedPage enterProbability(Opportunity opportunity){
+    public NewOpportunityPopup enterProbability(Opportunity opportunity){
         probabilityField.clear();
         probabilityField.sendKeys(String.valueOf(opportunity.getProbability()));
         return this;
     }
 
     @Step("Enter 'Tracking Number'")
-    public SalesOpportunitiesRecentlyViewedPage enterTrackingNumber(Opportunity opportunity){
+    public NewOpportunityPopup enterTrackingNumber(Opportunity opportunity){
         trackingNumberField.clear();
         trackingNumberField.sendKeys(opportunity.getTrackingNumber());
         return this;
     }
 
     @Step("Enter 'Current Generator'")
-    public SalesOpportunitiesRecentlyViewedPage enterCurrentGenerator(Opportunity opportunity){
+    public NewOpportunityPopup enterCurrentGenerator(Opportunity opportunity){
         currentGeneratorField.clear();
         currentGeneratorField.sendKeys(opportunity.getCurrentGenerator());
         return this;
     }
 
     @Step("Enter 'Main Competitor'")
-    public SalesOpportunitiesRecentlyViewedPage enterMainCompetitor(Opportunity opportunity){
+    public NewOpportunityPopup enterMainCompetitor(Opportunity opportunity){
         mainCompetitorField.clear();
         mainCompetitorField.sendKeys(opportunity.getMainCompetitor());
         return this;
     }
 
     @Step("Enter 'Description'")
-    public SalesOpportunitiesRecentlyViewedPage enterDescription(Opportunity opportunity){
+    public NewOpportunityPopup enterDescription(Opportunity opportunity){
         descriptionField.clear();
         descriptionField.sendKeys(opportunity.getDescription());
         return this;
     }
 
     @Step("Click on 'Type' picklist")
-    public SalesOpportunitiesRecentlyViewedPage selectTypeInPicklist(Opportunity opportunity){
+    public NewOpportunityPopup selectTypeInPicklist(Opportunity opportunity){
         waitHelper().waitElementUntilVisible(typePicklist);
         typePicklist.click();
         chooseOptionInPicklist(opportunity.getType());
@@ -179,7 +177,7 @@ public class SalesOpportunitiesRecentlyViewedPage extends SalesPage{
     }
 
     @Step("Click on 'Lead Source' picklist")
-    public SalesOpportunitiesRecentlyViewedPage selectLeadSourceInPicklist(Opportunity opportunity){
+    public NewOpportunityPopup selectLeadSourceInPicklist(Opportunity opportunity){
         waitHelper().waitElementUntilVisible(leadSourcePicklist);
         leadSourcePicklist.click();
         chooseOptionInPicklist(opportunity.getLeadSource());
@@ -187,10 +185,15 @@ public class SalesOpportunitiesRecentlyViewedPage extends SalesPage{
     }
 
     @Step("Click on 'Lead Source' picklist")
-    public SalesOpportunitiesRecentlyViewedPage selectDeliveryStatusPicklist(Opportunity opportunity){
-        waitHelper().waitElementUntilVisible(deliveryStatusPicklist);
-        deliveryStatusPicklist.click();
-        chooseOptionInPicklist(opportunity.getDeliveryStatus());
+    public NewOpportunityPopup selectDeliveryInstallationStatusPicklist(Opportunity opportunity){
+        waitHelper().waitElementUntilVisible(deliveryInstallationStatusPicklist);
+        deliveryInstallationStatusPicklist.click();
+        chooseOptionInPicklist(opportunity.getDeliveryInstallationStatus());
         return this;
+    }
+
+    @Override
+    public void waitUntilLoaded() {
+        waitHelper().waitElementUntilVisible(newOpportunityModalWindow);
     }
 }

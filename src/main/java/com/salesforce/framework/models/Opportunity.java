@@ -9,11 +9,11 @@ public class Opportunity {
     private String type;
     private String leadSource;
     private int probability;
-    private int orderNumber;
+    private String orderNumber;
     private String trackingNumber;
     private String currentGenerator;
     private String mainCompetitor;
-    private String deliveryStatus;
+    private String deliveryInstallationStatus;
     private String description;
 
 
@@ -50,7 +50,7 @@ public class Opportunity {
         return probability;
     }
 
-    public int getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
@@ -66,12 +66,79 @@ public class Opportunity {
         return mainCompetitor;
     }
 
-    public String getDeliveryStatus() {
-        return deliveryStatus;
+    public String getDeliveryInstallationStatus() {
+        return deliveryInstallationStatus;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
+
+    public void setCloseDate(String closeDate) {
+        this.closeDate = closeDate;
+    }
+
+    public Opportunity setAmount(double amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    public Opportunity setNextStep(String nextStep) {
+        this.nextStep = nextStep;
+        return this;
+    }
+
+    public Opportunity setType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public Opportunity setLeadSource(String leadSource) {
+        this.leadSource = leadSource;
+        return this;
+    }
+
+    public Opportunity setProbability(int probability) {
+        this.probability = probability;
+        return this;
+    }
+
+    public Opportunity setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+        return this;
+    }
+
+    public Opportunity setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
+        return this;
+    }
+
+    public Opportunity setCurrentGenerator(String currentGenerator) {
+        this.currentGenerator = currentGenerator;
+        return this;
+    }
+
+    public Opportunity setMainCompetitor(String mainCompetitor) {
+        this.mainCompetitor = mainCompetitor;
+        return this;
+    }
+
+    public Opportunity setDeliveryInstallationStatus(String deliveryInstallationStatus) {
+        this.deliveryInstallationStatus = deliveryInstallationStatus;
+        return this;
+    }
+
+    public Opportunity setDescription(String description) {
+        this.description = description;
+        return this;
     }
 
     public Opportunity() {
@@ -94,7 +161,7 @@ public class Opportunity {
         trackingNumber = builder.trackingNumber;
         currentGenerator = builder.currentGenerator;
         mainCompetitor = builder.mainCompetitor;
-        deliveryStatus = builder.deliveryStatus;
+        deliveryInstallationStatus = builder.deliveryInstallationStatus;
         description = builder.description;
     }
 
@@ -107,82 +174,82 @@ public class Opportunity {
         private String type;
         private String leadSource;
         private int probability;
-        private int orderNumber;
+        private String orderNumber;
         private String trackingNumber;
         private String currentGenerator;
         private String mainCompetitor;
-        private String deliveryStatus;
+        private String deliveryInstallationStatus;
         private String description;
 
         private Builder(){
         }
 
-        public Builder withName(final String val) {
+        public Builder setName(String val) {
             name = val;
             return this;
         }
 
-        public Builder withStage (final String val) {
+        public Builder withStage (String val) {
             stage = val;
             return this;
         }
 
-        public Builder withCloseDate(final String val){
+        public Builder withCloseDate(String val){
             closeDate = val;
             return this;
         }
 
-        public Builder withAmount(final double val) {
+        public Builder withAmount(double val) {
             amount = val;
             return this;
         }
 
-        public Builder withNextStep(final String val) {
+        public Builder withNextStep(String val) {
             nextStep = val;
             return this;
         }
 
-        public Builder withType(final String val) {
+        public Builder withType(String val) {
             type = val;
             return this;
         }
 
-        public Builder withProbability(final int val) {
+        public Builder withProbability(int val) {
             probability = val;
             return this;
         }
 
-        public Builder withLeadSource(final String val) {
+        public Builder withLeadSource(String val) {
             leadSource = val;
             return this;
         }
 
-        public Builder withOrderNumber(final int val) {
+        public Builder withOrderNumber(String val) {
             orderNumber = val;
             return this;
         }
 
-        public Builder withTrackingNumber(final String val){
+        public Builder withTrackingNumber(String val){
             trackingNumber = val;
             return this;
         }
 
-        public Builder withCurrentGenerator(final String val){
+        public Builder withCurrentGenerator(String val){
             currentGenerator = val;
             return this;
         }
 
-        public Builder withMainCompetitor(final String val){
+        public Builder withMainCompetitor(String val){
             mainCompetitor = val;
             return this;
         }
 
-        public Builder withDeliveryStatus(final String val){
-            deliveryStatus = val;
+        public Builder withDeliveryStatus(String val){
+            deliveryInstallationStatus = val;
             return this;
         }
 
-        public Builder withDescription(final String val) {
+        public Builder withDescription(String val) {
             description = val;
             return this;
         }

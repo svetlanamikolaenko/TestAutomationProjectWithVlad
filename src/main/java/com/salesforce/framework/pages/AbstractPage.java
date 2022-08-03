@@ -18,12 +18,6 @@ public abstract class AbstractPage {
           PageFactory.initElements(driver, this);
      }
 
-     public void setCookies() {
-          driver.manage().addCookie(new Cookie("welcomebanner_status", "dismiss"));
-          driver.manage().addCookie(new Cookie("cookieconsent_status", "dismiss"));
-          driver.navigate().refresh();
-     }
-
      public WebDriverWaitHelper waitHelper() {
           return new WebDriverWaitHelper();
      }

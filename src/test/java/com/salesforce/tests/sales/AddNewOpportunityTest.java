@@ -1,73 +1,78 @@
 package com.salesforce.tests.sales;
 
-import com.github.javafaker.Faker;
-import com.salesforce.framework.enums.Opportunities;
+import com.salesforce.framework.enums.SalesTabLabels;
 import com.salesforce.framework.models.Opportunity;
-import com.salesforce.framework.pages.sales.SalesOpportunitiesRecentlyViewedPage;
-import com.salesforce.framework.pages.sales.SalesOpportunityRecordPage;
-import com.salesforce.framework.pages.sales.SalesPage;
+import com.salesforce.framework.pages.SalesHomePage;
+import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
+import com.salesforce.framework.pages.opportunity.OpportunityDetailsPage;
+import com.salesforce.framework.pages.opportunity.OpportunityHeaderPage;
 import com.salesforce.tests.BaseTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static com.salesforce.framework.enums.OpportunityFieldsNames.*;
+
 public class AddNewOpportunityTest extends BaseTest {
-    private SalesPage salesPage;
-    private SalesOpportunitiesRecentlyViewedPage recentlyViewedPage;
     private Opportunity opportunity;
     private Opportunity opportunityAll;
 
-    private static final String OPPORTUNITY_RECORD_NAME = new Faker().name().title();
-    private static final String CLOSE_DATE = "24/07/2022";
-    private static final String STAGE_OPTION = "Needs Analysis";
+    private OpportunitiesPage opportunitiesPage;
+    private SalesHomePage salesHomePage;
+    private OpportunityHeaderPage headerPage;
+    private OpportunityDetailsPage detailsPage;
 
-    private static final String OPPORTUNITY_RECORD_NAME_ALL = new Faker().name().title();
-    private static final String CLOSE_DATE_ALL = "25/07/2022";
-    private static final String STAGE_OPTION_ALL = "Prospecting";
-    private static final double AMOUNT = new Faker().random().nextInt(10, 100);
-    private static final String NEXT_STEP = "Test";
+    private static final String OPPORTUNITY_RECORD_NAME = faker.name().title();
+
+    private static final String OPPORTUNITY_RECORD_NAME_ALL = faker.name().title();
+    private static final double AMOUNT_VALUE = faker.random().nextInt(10, 100);
+    private static final String ORDER_NUMBER_VALUE = faker.code().ean8();
+    private static final int PROBABILITY_VALUE = faker.random().nextInt(10, 25);
+    private static final String TRACKING_NUMBER_VALUE = faker.code().ean8();
+    private static final String DESCRIPTION_VALUE = faker.lorem().fixedString(50);
 
     @BeforeMethod
-    public void setup() {
-        opportunityAll = Opportunities.TEST_OPPORTUNITY.getOpportunity();
-
-        opportunity = Opportunity.newBuilder()
-                .withName(OPPORTUNITY_RECORD_NAME)
-                .withStage(STAGE_OPTION)
-                .withCloseDate(CLOSE_DATE)
-                .build();
-        salesPage = setupHomePage.openSalesApplication();
+    public void setupData() {
+        opportunity = dataProvider.generateOpportunityRequiredFields(OPPORTUNITY_RECORD_NAME);
+        opportunityAll = dataProvider.generateAllOpportunityFields(OPPORTUNITY_RECORD_NAME_ALL,
+                AMOUNT_VALUE,
+                ORDER_NUMBER_VALUE,
+                PROBABILITY_VALUE,
+                TRACKING_NUMBER_VALUE,
+                DESCRIPTION_VALUE);
+        salesHomePage = setupHomePage.openSalesApplication();
+        opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
     }
 
-    @Test
+    @Test(priority = 1)
     public void verifyAddNewOpportunityWithRequiredFieldsTest() {
-        recentlyViewedPage = salesPage.navigateToSalesTab("Opportunities");
-        SalesOpportunityRecordPage recordPage = recentlyViewedPage
+        headerPage = opportunitiesPage
+                .clickOnNewButton()
                 .enterAllRequiredFields(opportunity)
                 .clickOnSaveButton();
 
-        String opportunityRecordLabel = recordPage.getOpportunityRecordLabel();
-        softAssert.assertEquals(opportunityRecordLabel, opportunity.getName(),
-                String.format("Opportunity record page 'Title' should be %s", opportunity.getName()));
+        softAssert.assertTrue(headerPage.isOpportunityRecordLabelDisplayed(opportunity.getName()),
+                String.format("Opportunity record page 'Label' should be %s", opportunity.getName()));
 
-        recordPage.openOpportunityRecordDetailsTab();
-        String actualOpportunityRecordName = recordPage.getOpportunityFieldValue("Opportunity Name");
+        detailsPage = headerPage.openOpportunityRecordDetailsTab();
+        String actualOpportunityRecordName = detailsPage.getOpportunityFieldValue(OPPORTUNITY_NAME.getFieldLabel());
         softAssert.assertEquals(actualOpportunityRecordName, opportunity.getName(),
                 String.format("Opportunity 'Name' should be %s", opportunity.getName()));
 
-        String actualOpportunityStage = recordPage.getOpportunityFieldValue("Stage");
+        String actualOpportunityStage = detailsPage.getOpportunityFieldValue(STAGE.getFieldLabel());
         softAssert.assertEquals(actualOpportunityStage, opportunity.getStage(),
                 String.format("Opportunity 'Stage' should be %s", opportunity.getStage()));
 
-        String actualOpportunityCloseDate = recordPage.getOpportunityFieldValue("Close Date");
+        String actualOpportunityCloseDate = detailsPage.getOpportunityFieldValue(CLOSE_DATE.getFieldLabel());
         softAssert.assertEquals(actualOpportunityCloseDate, opportunity.getCloseDate(),
                 String.format("Opportunity 'Close Date' should be %s", opportunity.getCloseDate()));
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(priority = 2)
     public void verifyAddNewOpportunityWithAllFields() {
-        recentlyViewedPage = salesPage.navigateToSalesTab("Opportunities");
-        SalesOpportunityRecordPage recordPage = recentlyViewedPage
+        opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
+        headerPage = opportunitiesPage
+                .clickOnNewButton()
                 .enterAllRequiredFields(opportunityAll)
                 .enterAmount(opportunityAll)
                 .enterNextStep(opportunityAll)
@@ -77,22 +82,26 @@ public class AddNewOpportunityTest extends BaseTest {
                 .enterProbability(opportunityAll)
                 .enterTrackingNumber(opportunityAll)
                 .enterCurrentGenerator(opportunityAll)
-                .selectDeliveryStatusPicklist(opportunityAll)
+                .selectDeliveryInstallationStatusPicklist(opportunityAll)
                 .enterMainCompetitor(opportunityAll)
                 .enterDescription(opportunityAll)
                 .clickOnSaveButton();
 
-        String opportunityRecordLabel = recordPage.getOpportunityRecordLabel();
-        softAssert.assertEquals(opportunityRecordLabel, opportunityAll.getName(),
-                String.format("Opportunity record page 'Title' should be %s", opportunityAll.getName()));
+        softAssert.assertTrue(headerPage.isOpportunityRecordLabelDisplayed(opportunityAll.getName()),
+                String.format("Opportunity record page 'Label' should be %s", opportunityAll.getName()));
 
-        recordPage.openOpportunityRecordDetailsTab();
-        String actualRecordName = recordPage.getOpportunityFieldValue("Opportunity Name");
-        String actualStage = recordPage.getOpportunityFieldValue("Stage");
-        String actualCloseDate = recordPage.getOpportunityFieldValue("Close Date");
-        double actualAmount = Double.parseDouble(recordPage.getOpportunityFieldValue("Amount").replaceAll("€", ""));
-        String actualNextStep = recordPage.getOpportunityFieldValue("Next Step");
-        int actualOrderNumber = Integer.parseInt(recordPage.getOpportunityFieldValue("Order Number"));
+        detailsPage = headerPage.openOpportunityRecordDetailsTab();
+
+        String actualRecordName = detailsPage.getOpportunityFieldValue(OPPORTUNITY_NAME.getFieldLabel());
+        String actualStage = detailsPage.getOpportunityFieldValue(STAGE.getFieldLabel());
+        String actualCloseDate = detailsPage.getOpportunityFieldValue(CLOSE_DATE.getFieldLabel());
+        double actualAmount = Double.parseDouble(detailsPage.getOpportunityFieldValue(AMOUNT.getFieldLabel()).replaceAll("€", ""));
+        String actualNextStep = detailsPage.getOpportunityFieldValue(NEXT_STEP.getFieldLabel());
+        String actualOrderNumber = detailsPage.getOpportunityFieldValue(ORDER_NUMBER.getFieldLabel());
+        String actualTrackingNumber = detailsPage.getOpportunityFieldValue(TRACKING_NUMBER.getFieldLabel());
+        String actualType = detailsPage.getOpportunityFieldValue(TYPE.getFieldLabel());
+        String actualMainCompetitor = detailsPage.getOpportunityFieldValue(MAIN_COMPETITOR.getFieldLabel());
+        String actualDescription = detailsPage.getOpportunityFieldValue(DESCRIPTION.getFieldLabel());
 
         softAssert.assertEquals(actualRecordName, opportunityAll.getName(),
                 String.format("Opportunity 'Name' should be %s", opportunityAll.getName()));
@@ -106,6 +115,14 @@ public class AddNewOpportunityTest extends BaseTest {
                 String.format("Opportunity 'Next Step' should be %s", opportunityAll.getNextStep()));
         softAssert.assertEquals(actualOrderNumber, opportunityAll.getOrderNumber(),
                 String.format("Opportunity 'Order Number' should be %s", opportunityAll.getOrderNumber()));
+        softAssert.assertEquals(actualTrackingNumber, opportunityAll.getTrackingNumber(),
+                String.format("Opportunity 'Tracking Number' should be %s", opportunityAll.getTrackingNumber()));
+        softAssert.assertEquals(actualType, opportunityAll.getType(),
+                String.format("Opportunity 'Type' should be %s", opportunityAll.getType()));
+        softAssert.assertEquals(actualMainCompetitor, opportunityAll.getMainCompetitor(),
+                String.format("Opportunity 'Main Competitor(s)' should be %s", opportunityAll.getMainCompetitor()));
+        softAssert.assertEquals(actualDescription, opportunityAll.getDescription(),
+                String.format("Opportunity 'Description' should be %s", opportunityAll.getDescription()));
         softAssert.assertAll();
     }
 }

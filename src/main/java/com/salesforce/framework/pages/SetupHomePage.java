@@ -1,5 +1,4 @@
 package com.salesforce.framework.pages;
-import com.salesforce.framework.pages.sales.SalesPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,12 +21,12 @@ public class SetupHomePage extends BasePage {
     }
 
     @Step("Open Sales application")
-    public SalesPage openSalesApplication() {
+    public SalesHomePage openSalesApplication() {
         waitHelper().waitElementUntilVisible(appLauncherIcon);
         appLauncherIcon.click();
         waitHelper().waitElementUntilVisible(salesAppLabel);
         jsHelper().clickJS(salesAppLabel);
-        return new SalesPage();
+        return new SalesHomePage();
     }
 
     @Override
