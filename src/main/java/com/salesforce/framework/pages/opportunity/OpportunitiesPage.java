@@ -14,9 +14,10 @@ public class OpportunitiesPage extends SalesHomePage {
     @FindBy(xpath = "//*[contains(@class,'breadcrumb')]//*[text()='Opportunities']")
     private WebElement opportunityTitleLabel;
 
+
     @Step("Click on 'New' button")
     public NewOpportunityPopup clickOnNewButton(){
-        waitUntilLoaded();
+        waitHelper().waitElementUntilVisible(newOpportunityButton);
         newOpportunityButton.click();
         return new NewOpportunityPopup();
     }
@@ -25,5 +26,11 @@ public class OpportunitiesPage extends SalesHomePage {
     public void waitUntilLoaded() {
         jsHelper().allElementsLoaded();
         waitHelper().waitElementUntilVisible(opportunityTitleLabel);
+    }
+
+    public OpportunitiesPage openOpportunitiesPage() {
+        driver.get(BASE_PAGE + "/lightning/o/Opportunity/list?filterName=Recent");
+        waitUntilLoaded();
+        return this;
     }
 }

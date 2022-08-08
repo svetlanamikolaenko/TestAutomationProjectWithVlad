@@ -24,17 +24,12 @@ public abstract class BaseTest {
     protected Customer customer;
     protected OpportunityDataProvider dataProvider;
 
-
-    @BeforeSuite
-    public void setupDriver() {
+    @BeforeClass
+    public void setLoginPage() {
         driver = Browser.getWebDriver();
         webDriverWaitHelper = new WebDriverWaitHelper();
         javaScriptHelper = new JavaScriptHelper();
         softAssert = new SoftAssert();
-    }
-
-    @BeforeClass
-    public void setLoginPage() {
         customer= Customers.TEST_USER.getCustomer();
         dataProvider = new OpportunityDataProvider();
         loginPage = new LoginPage();
@@ -42,7 +37,7 @@ public abstract class BaseTest {
         setupHomePage = loginPage.loginAs(customer);
     }
 
-    @AfterSuite(alwaysRun = true)
+    @AfterClass(alwaysRun = true)
     public void closeSite() {
         javaScriptHelper.clearLocalStorageJS();
         Browser.closeWebDriver();

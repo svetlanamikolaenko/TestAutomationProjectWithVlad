@@ -1,8 +1,9 @@
 package com.salesforce.tests.sales;
 
-import com.salesforce.framework.enums.SalesTabLabels;
+import com.salesforce.framework.enums.*;
 import com.salesforce.framework.models.Opportunity;
 import com.salesforce.framework.pages.SalesHomePage;
+import com.salesforce.framework.pages.opportunity.NewOpportunityPopup;
 import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
 import com.salesforce.framework.pages.opportunity.OpportunityDetailsPage;
 import com.salesforce.framework.pages.opportunity.OpportunityHeaderPage;
@@ -13,16 +14,16 @@ import org.testng.annotations.Test;
 import static com.salesforce.framework.enums.OpportunityFieldsNames.*;
 
 public class AddNewOpportunityTest extends BaseTest {
+
     private Opportunity opportunity;
     private Opportunity opportunityAll;
-
     private OpportunitiesPage opportunitiesPage;
     private SalesHomePage salesHomePage;
-    private OpportunityHeaderPage headerPage;
+    private NewOpportunityPopup newOpportunityPopup;
     private OpportunityDetailsPage detailsPage;
+    private OpportunityHeaderPage headerPage;
 
     private static final String OPPORTUNITY_RECORD_NAME = faker.name().title();
-
     private static final String OPPORTUNITY_RECORD_NAME_ALL = faker.name().title();
     private static final double AMOUNT_VALUE = faker.random().nextInt(10, 100);
     private static final String ORDER_NUMBER_VALUE = faker.code().ean8();
@@ -40,16 +41,17 @@ public class AddNewOpportunityTest extends BaseTest {
                 TRACKING_NUMBER_VALUE,
                 DESCRIPTION_VALUE);
         salesHomePage = setupHomePage.openSalesApplication();
-        opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
     }
 
     @Test(priority = 1)
     public void verifyAddNewOpportunityWithRequiredFieldsTest() {
-        headerPage = opportunitiesPage
+        opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
+        newOpportunityPopup = opportunitiesPage
                 .clickOnNewButton()
-                .enterAllRequiredFields(opportunity)
-                .clickOnSaveButton();
+                .enterAllRequiredFields(opportunity);
+        newOpportunityPopup.clickOnSaveButton();
 
+        headerPage = new OpportunityHeaderPage();
         softAssert.assertTrue(headerPage.isOpportunityRecordLabelDisplayed(opportunity.getName()),
                 String.format("Opportunity record page 'Label' should be %s", opportunity.getName()));
 
@@ -70,23 +72,24 @@ public class AddNewOpportunityTest extends BaseTest {
 
     @Test(priority = 2)
     public void verifyAddNewOpportunityWithAllFields() {
-        opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
-        headerPage = opportunitiesPage
+        newOpportunityPopup = opportunitiesPage
+                .openOpportunitiesPage()
                 .clickOnNewButton()
                 .enterAllRequiredFields(opportunityAll)
                 .enterAmount(opportunityAll)
                 .enterNextStep(opportunityAll)
                 .enterOrderNumber(opportunityAll)
-                .selectTypeInPicklist(opportunityAll)
-                .selectLeadSourceInPicklist(opportunityAll)
+                .selectValueInPicklist(TYPE.getFieldLabel(),opportunityAll.getType())
+                .selectValueInPicklist(LEAD_SOURCE.getFieldLabel(), opportunityAll.getLeadSource())
                 .enterProbability(opportunityAll)
                 .enterTrackingNumber(opportunityAll)
                 .enterCurrentGenerator(opportunityAll)
-                .selectDeliveryInstallationStatusPicklist(opportunityAll)
+                .selectValueInPicklist(DELIVERY_STATUS.getFieldLabel(), opportunityAll.getDeliveryInstallationStatus())
                 .enterMainCompetitor(opportunityAll)
-                .enterDescription(opportunityAll)
-                .clickOnSaveButton();
+                .enterDescription(opportunityAll);
+        newOpportunityPopup.clickOnSaveButton();
 
+        headerPage = new OpportunityHeaderPage();
         softAssert.assertTrue(headerPage.isOpportunityRecordLabelDisplayed(opportunityAll.getName()),
                 String.format("Opportunity record page 'Label' should be %s", opportunityAll.getName()));
 

@@ -13,7 +13,6 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <aspectj.version>1.8.10</aspectj.version>
-    <allure.version>2.14.0</allure.version>
   </properties>
 
   <dependencies>
@@ -26,7 +25,6 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.4.0</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.github.bonigarcia</groupId>
@@ -51,18 +49,7 @@
     <dependency>
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-testng</artifactId>
-      <version>${allure.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-selenide</artifactId>
-      <version>${allure.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.codeborne</groupId>
-      <artifactId>selenide</artifactId>
-      <version>5.14.0</version>
-      <scope>compile</scope>
+      <version>2.14.0</version>
     </dependency>
   </dependencies>
 

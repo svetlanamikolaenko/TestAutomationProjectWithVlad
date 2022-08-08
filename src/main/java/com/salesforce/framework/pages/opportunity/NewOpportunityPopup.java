@@ -1,5 +1,6 @@
 package com.salesforce.framework.pages.opportunity;
 
+import com.salesforce.framework.enums.OpportunityFieldsNames;
 import com.salesforce.framework.models.Opportunity;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
@@ -40,23 +41,24 @@ public class NewOpportunityPopup extends OpportunitiesPage{
     @FindBy(xpath = "//label[text()='Description']//..//textarea")
     private WebElement descriptionField;
 
-    @FindBy(xpath = "//label[text()='Type']/..//button[@type='button']")
-    private WebElement typePicklist;
-
-    @FindBy(xpath = "//label[text()='Lead Source']/..//button[@type='button']")
-    private WebElement leadSourcePicklist;
-
-    @FindBy(xpath = "//label[text()='Stage']/..//button[@type='button']")
-    private WebElement stagePicklist;
-
-    @FindBy(xpath = "//label[text()='Delivery/Installation Status']/..//button[@type='button']")
-    private WebElement deliveryInstallationStatusPicklist;
-
     @FindBy(xpath = "//button[@name='SaveEdit']")
     private WebElement saveOpportunityButton;
 
+    @FindBy(xpath = "//button[@name='CancelEdit']")
+    private WebElement cancelOpportunityButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'forceFormPageError')]")
+    private WebElement formPageErrorDialog;
+
+    @FindBy(xpath = "//div[contains(@class, 'forceFormPageError')]//*[contains(@class,'pageErrorHeader')]")
+    private WebElement formPageErrorDialogHeader;
+
+    @FindBy(xpath = "//div[contains(@class, 'forceFormPageError')]//*[contains(@class,'fieldLevelErrors')]")
+    private WebElement formFieldErrorDialog;
+
     private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@role='option'][@data-value='%s']";
     private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']//..//input[@type='text']";
+    private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/..//button[@type='button']";
 
     public NewOpportunityPopup enterValuesInField(String fieldLabel, String value){
         waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_FORMAT, fieldLabel));
@@ -65,7 +67,7 @@ public class NewOpportunityPopup extends OpportunitiesPage{
         return this;
     }
 
-    @Step("Enter 'Opportunity Name'")
+    @Step("Enter '{0}' to field 'Opportunity Name'")
     public NewOpportunityPopup enterOpportunityName(String opportunityName){
         waitUntilLoaded();
         opportunityNameTextField.clear();
@@ -81,10 +83,10 @@ public class NewOpportunityPopup extends OpportunitiesPage{
         return this;
     }
 
-    @Step("Click on 'Stage' picklist")
-    public NewOpportunityPopup clickOnStagePicklist(){
-        waitHelper().waitElementUntilVisible(stagePicklist);
-        stagePicklist.click();
+    @Step("Click on '{0}' picklist")
+    public NewOpportunityPopup clickOnPicklist(String picklistLabel){
+        waitHelper().waitLocatorUntilVisible(String.format(PICKLIST_LABEL_FORMAT, picklistLabel));
+        findElementByXpath(String.format(PICKLIST_LABEL_FORMAT, picklistLabel)).click();
         return this;
     }
 
@@ -95,11 +97,23 @@ public class NewOpportunityPopup extends OpportunitiesPage{
         return this;
     }
 
+    @Step("Select '{0}' in picklist")
+    public NewOpportunityPopup selectValueInPicklist(String picklistLabel, String option){
+        clickOnPicklist(picklistLabel);
+        chooseOptionInPicklist(option);
+        return this;
+    }
+
     @Step("Click on 'Save' button")
-    public OpportunityHeaderPage clickOnSaveButton(){
+    public void clickOnSaveButton(){
         waitHelper().waitElementUntilVisible(saveOpportunityButton);
         saveOpportunityButton.click();
-        return new OpportunityHeaderPage();
+    }
+
+    @Step("Click on 'Cancel' button")
+    public void clickOnCancelButton(){
+        waitHelper().waitElementUntilVisible(cancelOpportunityButton);
+        cancelOpportunityButton.click();
     }
 
     @Step("Enter all required fields in the new opportunity")
@@ -107,8 +121,7 @@ public class NewOpportunityPopup extends OpportunitiesPage{
         waitUntilLoaded();
         enterOpportunityName(opportunity.getName());
         enterCloseDate(opportunity.getCloseDate());
-        clickOnStagePicklist();
-        chooseOptionInPicklist(opportunity.getStage());
+        selectValueInPicklist(OpportunityFieldsNames.STAGE.getFieldLabel(), opportunity.getStage());
         return this;
     }
 
@@ -168,28 +181,14 @@ public class NewOpportunityPopup extends OpportunitiesPage{
         return this;
     }
 
-    @Step("Click on 'Type' picklist")
-    public NewOpportunityPopup selectTypeInPicklist(Opportunity opportunity){
-        waitHelper().waitElementUntilVisible(typePicklist);
-        typePicklist.click();
-        chooseOptionInPicklist(opportunity.getType());
-        return this;
+    public String getFormPageErrorDialogHeaderText(){
+        waitHelper().waitElementUntilVisible(formPageErrorDialog);
+        return formPageErrorDialogHeader.getText();
     }
 
-    @Step("Click on 'Lead Source' picklist")
-    public NewOpportunityPopup selectLeadSourceInPicklist(Opportunity opportunity){
-        waitHelper().waitElementUntilVisible(leadSourcePicklist);
-        leadSourcePicklist.click();
-        chooseOptionInPicklist(opportunity.getLeadSource());
-        return this;
-    }
-
-    @Step("Click on 'Lead Source' picklist")
-    public NewOpportunityPopup selectDeliveryInstallationStatusPicklist(Opportunity opportunity){
-        waitHelper().waitElementUntilVisible(deliveryInstallationStatusPicklist);
-        deliveryInstallationStatusPicklist.click();
-        chooseOptionInPicklist(opportunity.getDeliveryInstallationStatus());
-        return this;
+    public String getFormFieldErrorText(){
+        waitHelper().waitElementUntilVisible(formPageErrorDialog);
+        return formFieldErrorDialog.getText();
     }
 
     @Override

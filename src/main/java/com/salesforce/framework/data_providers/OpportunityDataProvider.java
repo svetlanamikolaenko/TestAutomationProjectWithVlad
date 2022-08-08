@@ -8,11 +8,13 @@ import java.time.LocalDate;
 
 public class OpportunityDataProvider {
 
+    private static final String TODAY_DATE = DateConvertorHelper.convertLocalDateToCivilianDateFormat(LocalDate.now());
+
     public Opportunity generateOpportunityRequiredFields(String opportunityName){
         return Opportunity.newBuilder()
                 .setName(opportunityName)
                 .withStage(OpportunityStages.NEEDS_ANALYSIS.getStage())
-                .withCloseDate(DateConvertorHelper.convertLocalDateToCivilianDateFormat(LocalDate.now()))
+                .withCloseDate(TODAY_DATE)
                 .build();
     }
 
@@ -30,5 +32,18 @@ public class OpportunityDataProvider {
                 .setMainCompetitor(MainCompetitors.COKE_COLA.getMainCompetitor())
                 .setDeliveryInstallationStatus(OpportunityDeliveryStatuses.YET_TO_BEGIN.getStatus())
                 .setDescription(description);
+    }
+
+    public Opportunity generateOpportunityWithoutNameField(){
+        return Opportunity.newBuilder()
+                .withStage(OpportunityStages.NEEDS_ANALYSIS.getStage())
+                .withCloseDate(TODAY_DATE)
+                .build();
+    }
+
+    public Opportunity generateOpportunityWithoutRequiredFields(String opportunityName){
+        return Opportunity.newBuilder()
+                .setName(opportunityName)
+                .build();
     }
 }
