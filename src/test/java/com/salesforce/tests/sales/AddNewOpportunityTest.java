@@ -8,7 +8,7 @@ import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
 import com.salesforce.framework.pages.opportunity.OpportunityDetailsPage;
 import com.salesforce.framework.pages.opportunity.OpportunityHeaderPage;
 import com.salesforce.tests.BaseTest;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.salesforce.framework.enums.OpportunityFieldsNames.*;
@@ -31,7 +31,7 @@ public class AddNewOpportunityTest extends BaseTest {
     private static final String TRACKING_NUMBER_VALUE = faker.code().ean8();
     private static final String DESCRIPTION_VALUE = faker.lorem().fixedString(50);
 
-    @BeforeMethod
+    @BeforeClass
     public void setupData() {
         opportunity = dataProvider.generateOpportunityRequiredFields(OPPORTUNITY_RECORD_NAME);
         opportunityAll = dataProvider.generateAllOpportunityFields(OPPORTUNITY_RECORD_NAME_ALL,

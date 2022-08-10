@@ -58,6 +58,7 @@ public class NewOpportunityPopup extends OpportunitiesPage{
 
     private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@role='option'][@data-value='%s']";
     private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']//..//input[@type='text']";
+    private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//..//..//*[@class='slds-form-element__help']";
     private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/..//button[@type='button']";
 
     public NewOpportunityPopup enterValuesInField(String fieldLabel, String value){
@@ -189,6 +190,11 @@ public class NewOpportunityPopup extends OpportunitiesPage{
     public String getFormFieldErrorText(){
         waitHelper().waitElementUntilVisible(formPageErrorDialog);
         return formFieldErrorDialog.getText();
+    }
+
+    public String getErrorMessageUnderRequiredField(String requiredFieldName){
+        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_ERROR_MESSAGE_FORMAT, requiredFieldName));
+        return findElementByXpath((String.format(INPUT_FIELD_ERROR_MESSAGE_FORMAT, requiredFieldName))).getText();
     }
 
     @Override
