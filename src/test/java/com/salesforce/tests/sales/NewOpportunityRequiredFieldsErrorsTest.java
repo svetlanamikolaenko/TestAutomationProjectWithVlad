@@ -1,6 +1,5 @@
 package com.salesforce.tests.sales;
 
-import com.salesforce.framework.data_providers.OpportunityDataProvider;
 import com.salesforce.framework.models.Opportunity;
 import com.salesforce.framework.pages.opportunity.NewOpportunityPopup;
 import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
@@ -20,7 +19,6 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
 
     @BeforeClass
     public void navigateToOpportunities() {
-        dataProvider = new OpportunityDataProvider();
         opportunity = dataProvider.generateOpportunityWithoutNameField();
         opportunityEmpty = dataProvider.generateOpportunityWithoutRequiredFields(faker.lorem().fixedString(20));
         opportunitiesPage = new OpportunitiesPage();
@@ -33,7 +31,7 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
     }
 
     @Test(description = "Verify that Form Page Error messages are displayed when required field is empty")
-    public void verifyErrorMessageIsDisplayedWhenEmptyRequiredField() {
+    public void verifyErrorMessageIsDisplayedWhenEmptyRequiredFieldTest() {
         newOpportunityPopup = opportunitiesPage
                 .clickOnNewButton()
                 .selectValueInPicklist(STAGE.getFieldLabel(), opportunity.getStage())
@@ -52,7 +50,7 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
     }
 
     @Test(description = "Verify that new Opportunity is not created when required fields is empty")
-    public void verifyOpportunityIsNotCreatedWithoutRequitedField() {
+    public void verifyOpportunityIsNotCreatedWithoutRequitedFieldTest() {
         newOpportunityPopup = opportunitiesPage
                 .clickOnNewButton()
                 .enterOpportunityName(opportunityEmpty.getName());
@@ -67,7 +65,7 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
     }
 
     @Test(description = "Verify appropriate error message appears under required fields")
-    public void verifyErrorMessagesUnderRequiredFields() {
+    public void verifyErrorMessagesUnderRequiredFieldsTest() {
         newOpportunityPopup = opportunitiesPage.clickOnNewButton();
         newOpportunityPopup.clickOnSaveButton();
 

@@ -22,13 +22,12 @@ public class NewOpportunityFieldsErrorsTest extends BaseTest {
     private OpportunitiesPage opportunitiesPage;
     private Opportunity opportunity;
     private NewOpportunityPopup newOpportunityPopup;
-    private SalesHomePage salesHomePage;
 
 
     @BeforeClass
     public void setupData() {
         opportunity = dataProvider.generateOpportunityRequiredFields(OPPORTUNITY_RECORD_NAME);
-        salesHomePage = setupHomePage.openSalesApplication();
+        SalesHomePage salesHomePage = setupHomePage.openSalesApplication();
         opportunitiesPage = new OpportunitiesPage();
         opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
     }
@@ -39,7 +38,7 @@ public class NewOpportunityFieldsErrorsTest extends BaseTest {
     }
 
     @Test(description = "Verify appropriate error message appears under fields")
-    public void verifyErrorMessageUnderNotRequiredFields(){
+    public void verifyErrorMessageUnderNotRequiredFieldsTest(){
         newOpportunityPopup = opportunitiesPage
                 .clickOnNewButton()
                 .enterAllRequiredFields(opportunity);
@@ -61,5 +60,4 @@ public class NewOpportunityFieldsErrorsTest extends BaseTest {
                 String.format("Error message under empty required field should be %s", expectedErrorMessageUnderAmountField));
         softAssert.assertAll();
     }
-
 }

@@ -39,7 +39,6 @@ public class Browser {
 
     public static void closeWebDriver(){
         if (driver.get() != null){
-            driver.get().manage().deleteAllCookies();
             driver.get().quit();
             driver.remove();
         }

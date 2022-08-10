@@ -8,6 +8,8 @@
         <classes>
             <class name="com.salesforce.tests.login.LoginTest"/>
             <class name="com.salesforce.tests.sales.AddNewOpportunityTest"/>
+            <class name="com.salesforce.tests.sales.NewOpportunityFieldsErrorsTest"/>
+            <class name="com.salesforce.tests.sales.NewOpportunityRequiredFieldsErrorsTest"/>
        </classes>
     </test>
 </suite>

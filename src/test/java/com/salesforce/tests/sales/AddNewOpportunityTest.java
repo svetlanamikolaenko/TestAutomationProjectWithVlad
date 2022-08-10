@@ -17,8 +17,6 @@ public class AddNewOpportunityTest extends BaseTest {
 
     private Opportunity opportunity;
     private Opportunity opportunityAll;
-    private OpportunitiesPage opportunitiesPage;
-    private SalesHomePage salesHomePage;
     private NewOpportunityPopup newOpportunityPopup;
     private OpportunityDetailsPage detailsPage;
     private OpportunityHeaderPage headerPage;
@@ -30,6 +28,7 @@ public class AddNewOpportunityTest extends BaseTest {
     private static final int PROBABILITY_VALUE = faker.random().nextInt(10, 25);
     private static final String TRACKING_NUMBER_VALUE = faker.code().ean8();
     private static final String DESCRIPTION_VALUE = faker.lorem().fixedString(50);
+    private OpportunitiesPage opportunitiesPage;
 
     @BeforeClass
     public void setupData() {
@@ -40,13 +39,15 @@ public class AddNewOpportunityTest extends BaseTest {
                 PROBABILITY_VALUE,
                 TRACKING_NUMBER_VALUE,
                 DESCRIPTION_VALUE);
-        salesHomePage = setupHomePage.openSalesApplication();
+        SalesHomePage salesHomePage = setupHomePage.openSalesApplication();
+        opportunitiesPage = new OpportunitiesPage();
+        opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
     }
 
     @Test(priority = 1)
     public void verifyAddNewOpportunityWithRequiredFieldsTest() {
-        opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
         newOpportunityPopup = opportunitiesPage
+                .openOpportunitiesPage()
                 .clickOnNewButton()
                 .enterAllRequiredFields(opportunity);
         newOpportunityPopup.clickOnSaveButton();
@@ -71,7 +72,7 @@ public class AddNewOpportunityTest extends BaseTest {
     }
 
     @Test(priority = 2)
-    public void verifyAddNewOpportunityWithAllFields() {
+    public void verifyAddNewOpportunityWithAllFieldsTest() {
         newOpportunityPopup = opportunitiesPage
                 .openOpportunitiesPage()
                 .clickOnNewButton()

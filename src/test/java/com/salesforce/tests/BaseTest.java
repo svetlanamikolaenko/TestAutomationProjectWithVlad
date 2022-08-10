@@ -24,7 +24,7 @@ public abstract class BaseTest {
     protected Customer customer;
     protected OpportunityDataProvider dataProvider;
 
-    @BeforeSuite(alwaysRun = true)
+    @BeforeClass
     public void setDriver(){
         driver = Browser.getWebDriver();
         webDriverWaitHelper = new WebDriverWaitHelper();
@@ -35,9 +35,10 @@ public abstract class BaseTest {
         loginPage = new LoginPage();
         loginPage = loginPage.openLoginPage();
         setupHomePage = loginPage.loginAs(customer);
+        dataProvider = new OpportunityDataProvider();
     }
 
-    @AfterSuite(alwaysRun = true)
+    @AfterClass(alwaysRun = true)
     public void closeSite() {
         javaScriptHelper.clearLocalStorageJS();
         Browser.closeWebDriver();
