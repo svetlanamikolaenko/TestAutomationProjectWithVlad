@@ -1,6 +1,6 @@
-package com.salesforce.framework.enums;
+package com.salesforce.framework.enums.opportunity;
 
-public enum OpportunityFieldsNames {
+public enum FieldsNames {
 
     OPPORTUNITY_NAME("Opportunity Name", "Name"),
     CLOSE_DATE("Close Date", "CloseDate"),
@@ -23,7 +23,7 @@ public enum OpportunityFieldsNames {
     private final String fieldLabel;
     private final String fieldName;
 
-    OpportunityFieldsNames(String fieldLabel, String fieldName) {
+    FieldsNames(String fieldLabel, String fieldName) {
         this.fieldLabel = fieldLabel;
         this.fieldName = fieldName;
     }

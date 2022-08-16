@@ -3,7 +3,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class SetupHomePage extends BasePage {
+public class SetupHomePage extends AbstractPage {
 
     @FindBy(xpath = "//h1//*[text()='Home']")
     private WebElement homeTitleLabel;
@@ -16,17 +16,16 @@ public class SetupHomePage extends BasePage {
 
     @Step("Get 'Home' title")
     public String getHomeTitle() {
-        waitUntilLoaded();
         return homeTitleLabel.getText();
     }
 
     @Step("Open Sales application")
-    public SalesHomePage openSalesApplication() {
+    public HomePage openSalesApplication() {
         waitHelper().waitElementUntilVisible(appLauncherIcon);
         appLauncherIcon.click();
         waitHelper().waitElementUntilVisible(salesAppLabel);
         jsHelper().clickJS(salesAppLabel);
-        return new SalesHomePage();
+        return new HomePage();
     }
 
     @Override

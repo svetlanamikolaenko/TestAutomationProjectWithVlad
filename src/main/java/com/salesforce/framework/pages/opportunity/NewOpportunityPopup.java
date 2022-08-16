@@ -1,10 +1,12 @@
 package com.salesforce.framework.pages.opportunity;
 
-import com.salesforce.framework.enums.OpportunityFieldsNames;
+import com.salesforce.framework.enums.opportunity.FieldsNames;
 import com.salesforce.framework.models.Opportunity;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import static com.salesforce.framework.enums.opportunity.FieldsNames.*;
 
 public class NewOpportunityPopup extends OpportunitiesPage{
 
@@ -61,26 +63,25 @@ public class NewOpportunityPopup extends OpportunitiesPage{
     private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//..//..//*[@class='slds-form-element__help']";
     private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/..//button[@type='button']";
 
-    public NewOpportunityPopup enterValuesInField(String fieldLabel, String value){
+    @Step("Enter '{1}' into {label.fieldLabel}")
+    public NewOpportunityPopup enterValueIntoInputField(FieldsNames label, String value){
+        String fieldLabel = label.getFieldLabel();
         waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_FORMAT, fieldLabel));
         findElementByXpath(String.format(INPUT_FIELD_FORMAT, fieldLabel)).clear();
         findElementByXpath(String.format(INPUT_FIELD_FORMAT, fieldLabel)).sendKeys(value);
         return this;
     }
 
+
     @Step("Enter '{0}' to field 'Opportunity Name'")
     public NewOpportunityPopup enterOpportunityName(String opportunityName){
-        waitUntilLoaded();
-        opportunityNameTextField.clear();
-        opportunityNameTextField.sendKeys(opportunityName);
+        enterValueIntoInputField(OPPORTUNITY_NAME, opportunityName);
         return this;
     }
 
-    @Step("Enter 'Close Date'")
+    @Step("Enter '{0}' into close date")
     public NewOpportunityPopup enterCloseDate(String closeDate){
-        waitHelper().waitElementUntilVisible(closeDatePickerField);
-        closeDatePickerField.clear();
-        closeDatePickerField.sendKeys(closeDate);
+        enterValueIntoInputField(CLOSE_DATE, closeDate);
         return this;
     }
 
@@ -98,103 +99,125 @@ public class NewOpportunityPopup extends OpportunitiesPage{
         return this;
     }
 
-    @Step("Select '{0}' in picklist")
-    public NewOpportunityPopup selectValueInPicklist(String picklistLabel, String option){
-        clickOnPicklist(picklistLabel);
+    @Step("Select '{1}' in picklist '{label.fieldLabel}'")
+    public NewOpportunityPopup selectValueInPicklist(FieldsNames label, String option){
+        clickOnPicklist(label.getFieldLabel());
         chooseOptionInPicklist(option);
         return this;
     }
 
     @Step("Click on 'Save' button")
-    public void clickOnSaveButton(){
+    public NewOpportunityPopup clickOnSaveButton(){
         waitHelper().waitElementUntilVisible(saveOpportunityButton);
         saveOpportunityButton.click();
+        return this;
+    }
+
+    @Step("Save opportunity")
+    public OpportunityDetailsPage saveOpportunity(){
+        clickOnSaveButton();
+        return new OpportunityDetailsPage();
     }
 
     @Step("Click on 'Cancel' button")
-    public void clickOnCancelButton(){
+    public OpportunitiesPage clickOnCancelButton(){
         waitHelper().waitElementUntilVisible(cancelOpportunityButton);
         cancelOpportunityButton.click();
+        return new OpportunitiesPage();
     }
 
-    @Step("Enter all required fields in the new opportunity")
+    @Step("Enter All Required fields {opportunity.name}, {opportunity.closeDate}, {opportunity.stage} ")
     public NewOpportunityPopup enterAllRequiredFields(Opportunity opportunity){
         waitUntilLoaded();
         enterOpportunityName(opportunity.getName());
         enterCloseDate(opportunity.getCloseDate());
-        selectValueInPicklist(OpportunityFieldsNames.STAGE.getFieldLabel(), opportunity.getStage());
+        selectValueInPicklist(STAGE, opportunity.getStage());
         return this;
     }
 
-    @Step("Enter 'Amount'")
+    @Step("Enter '{opportunity.amount}'")
     public NewOpportunityPopup enterAmount(Opportunity opportunity){
         amountField.clear();
         amountField.sendKeys(String.valueOf(opportunity.getAmount()));
         return this;
     }
 
-    @Step("Enter 'Next Step'")
+    @Step("Enter '{opportunity.nextStep}'")
     public NewOpportunityPopup enterNextStep(Opportunity opportunity){
         nextStepTextField.clear();
         nextStepTextField.sendKeys(opportunity.getNextStep());
         return this;
     }
 
-    @Step("Enter 'Order Number'")
+    @Step("Enter '{opportunity.orderNumber}'")
     public NewOpportunityPopup enterOrderNumber(Opportunity opportunity){
         orderNumberField.clear();
         orderNumberField.sendKeys(String.valueOf(opportunity.getOrderNumber()));
         return this;
     }
 
-    @Step("Enter 'Probability'")
+    @Step("Enter '{opportunity.probability}'")
     public NewOpportunityPopup enterProbability(Opportunity opportunity){
         probabilityField.clear();
         probabilityField.sendKeys(String.valueOf(opportunity.getProbability()));
         return this;
     }
 
-    @Step("Enter 'Tracking Number'")
+    @Step("Enter '{opportunity.trackingNumber}'")
     public NewOpportunityPopup enterTrackingNumber(Opportunity opportunity){
         trackingNumberField.clear();
         trackingNumberField.sendKeys(opportunity.getTrackingNumber());
         return this;
     }
 
-    @Step("Enter 'Current Generator'")
+    @Step("Enter '{opportunity.currentGenerator}'")
     public NewOpportunityPopup enterCurrentGenerator(Opportunity opportunity){
         currentGeneratorField.clear();
         currentGeneratorField.sendKeys(opportunity.getCurrentGenerator());
         return this;
     }
 
-    @Step("Enter 'Main Competitor'")
+    @Step("Enter '{opportunity.mainCompetitor}'")
     public NewOpportunityPopup enterMainCompetitor(Opportunity opportunity){
         mainCompetitorField.clear();
         mainCompetitorField.sendKeys(opportunity.getMainCompetitor());
         return this;
     }
 
-    @Step("Enter 'Description'")
+    @Step("Enter '{opportunity.description}'")
     public NewOpportunityPopup enterDescription(Opportunity opportunity){
         descriptionField.clear();
         descriptionField.sendKeys(opportunity.getDescription());
         return this;
     }
 
+    @Step("Get error message in the form header '{0}'")
     public String getFormPageErrorDialogHeaderText(){
         waitHelper().waitElementUntilVisible(formPageErrorDialog);
         return formPageErrorDialogHeader.getText();
     }
 
-    public String getFormFieldErrorText(){
+    @Step("Get error field in Form Page Dialog")
+    public String getFieldErrorTextInFormPageDialog(){
         waitHelper().waitElementUntilVisible(formPageErrorDialog);
         return formFieldErrorDialog.getText();
     }
 
-    public String getErrorMessageUnderRequiredField(String requiredFieldName){
-        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_ERROR_MESSAGE_FORMAT, requiredFieldName));
-        return findElementByXpath((String.format(INPUT_FIELD_ERROR_MESSAGE_FORMAT, requiredFieldName))).getText();
+    @Step("Get error message under required field '{label.fieldLabel}'")
+    public String getErrorMessageUnderField(FieldsNames label){
+        String fieldLabel = label.getFieldLabel();
+        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_ERROR_MESSAGE_FORMAT, fieldLabel));
+        return findElementByXpath((String.format(INPUT_FIELD_ERROR_MESSAGE_FORMAT, fieldLabel))).getText();
+    }
+
+    @Step("Verify if 'We hit a snag.' is displayed")
+    public boolean isFormPageErrorDialogDisplayed(){
+        return getFormPageErrorDialogHeaderText().equals("We hit a snag.");
+    }
+
+    @Step("Verify if '{label.fieldLabel}' is displayed in Form Page Error Dialog")
+    public boolean isFieldDisplayedInFormPageDialog(FieldsNames label){
+        return getFieldErrorTextInFormPageDialog().contains(label.getFieldLabel());
     }
 
     @Override

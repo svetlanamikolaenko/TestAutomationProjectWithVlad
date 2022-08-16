@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Regression testing Suite" verbose="1" configfailurepolicy="continue" parallel="classes" thread-count="1">
-    <listeners>
-        <listener class-name="com.salesforce.framework.listeners.AllureListener"/>
-    </listeners>
-    <test name="All tests">
+    <test name="tests">
         <classes>
             <class name="com.salesforce.tests.login.LoginTest"/>
-            <class name="com.salesforce.tests.sales.AddNewOpportunityTest"/>
+            <class name="com.salesforce.tests.sales.AddNewOpportunityWithRequiredFieldsTest"/>
+            <class name="com.salesforce.tests.sales.AddNewOpportunityWithAllFieldsTest"/>
             <class name="com.salesforce.tests.sales.NewOpportunityFieldsErrorsTest"/>
             <class name="com.salesforce.tests.sales.NewOpportunityRequiredFieldsErrorsTest"/>
-       </classes>
+        </classes>
     </test>
 </suite>

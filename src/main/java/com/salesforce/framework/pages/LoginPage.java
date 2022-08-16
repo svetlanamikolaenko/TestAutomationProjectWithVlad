@@ -1,11 +1,13 @@
 package com.salesforce.framework.pages;
 
+import com.salesforce.framework.browser.Browser;
 import com.salesforce.framework.models.Customer;
 import io.qameta.allure.Step;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class LoginPage extends BasePage {
+public class LoginPage extends AbstractPage {
 
     @FindBy(xpath = "//input[@id='username']")
     private WebElement userNameField;
@@ -20,38 +22,44 @@ public class LoginPage extends BasePage {
     private WebElement loginForm;
 
     @Step("Enter '{0}' Email")
-    private void setEmail(String email) {
+    private LoginPage setEmail(String email) {
+        waitHelper().waitElementUntilVisible(userNameField);
         userNameField.clear();
         userNameField.sendKeys(email);
+        return this;
     }
 
     @Step("Enter '{0}' Password")
-    private void setPassword(String password) {
+    private LoginPage setPassword(String password) {
         passwordField.clear();
         passwordField.sendKeys(password);
+        return this;
     }
 
-    @Step("Click On Login Button")
+    @Step("Click on Login Button")
     public void clickOnLoginButton() {
         loginButton.click();
     }
 
-    @Step("Login as customer")
-    public SetupHomePage loginAs(Customer customer){
+    @Step("Login as '{customer.email}','{customer.password}'")
+    public HomePage loginAsUserAndOpenHomePage(Customer customer) {
         setEmail(customer.getEmail());
         setPassword(customer.getPassword());
         clickOnLoginButton();
-        return new SetupHomePage();
+        driver.get(Browser.getBaseUrl());
+        return new HomePage();
     }
 
-    public LoginPage openLoginPage() {
-        driver.get(BASE_PAGE + "/");
-        waitUntilLoaded();
-        return this;
+    @Step("Login page is opened")
+    public boolean isOpened() {
+        try {
+            return loginForm.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 
     @Override
     protected void waitUntilLoaded() {
-        waitHelper().waitElementUntilVisible(loginForm);
     }
 }

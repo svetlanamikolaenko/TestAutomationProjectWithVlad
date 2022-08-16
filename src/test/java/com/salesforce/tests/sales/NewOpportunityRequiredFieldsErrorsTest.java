@@ -1,5 +1,6 @@
 package com.salesforce.tests.sales;
 
+import com.salesforce.framework.enums.Customers;
 import com.salesforce.framework.models.Opportunity;
 import com.salesforce.framework.pages.opportunity.NewOpportunityPopup;
 import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
@@ -8,89 +9,75 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.salesforce.framework.enums.OpportunityFieldsNames.*;
+import static com.salesforce.framework.enums.opportunity.FieldsNames.*;
 
 public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
 
     private OpportunitiesPage opportunitiesPage;
     private Opportunity opportunity;
-    private Opportunity opportunityEmpty;
     private NewOpportunityPopup newOpportunityPopup;
+    private static final String INVALID_CLOSE_DATE = "25.05.2022";
 
     @BeforeClass
     public void navigateToOpportunities() {
         opportunity = dataProvider.generateOpportunityWithoutNameField();
-        opportunityEmpty = dataProvider.generateOpportunityWithoutRequiredFields(faker.lorem().fixedString(20));
-        opportunitiesPage = new OpportunitiesPage();
-        opportunitiesPage = opportunitiesPage.openOpportunitiesPage();
-    }
-
-    @AfterMethod
-    public void clickCancel() {
-        newOpportunityPopup.clickOnCancelButton();
+        opportunitiesPage = BROWSER.loginAs(Customers.TEST_USER.getCustomer())
+                .openOpportunityTab();
     }
 
     @Test(description = "Verify that Form Page Error messages are displayed when required field is empty")
     public void verifyErrorMessageIsDisplayedWhenEmptyRequiredFieldTest() {
         newOpportunityPopup = opportunitiesPage
                 .clickOnNewButton()
-                .selectValueInPicklist(STAGE.getFieldLabel(), opportunity.getStage())
-                .enterCloseDate(opportunity.getCloseDate());
-        newOpportunityPopup.clickOnSaveButton();
+                .selectValueInPicklist(STAGE, opportunity.getStage())
+                .enterValueIntoInputField(CLOSE_DATE, opportunity.getCloseDate())
+                .clickOnSaveButton();
 
-        String expectedErrorMessage = "We hit a snag.";
-        String actualFormPageErrorMessage = newOpportunityPopup.getFormPageErrorDialogHeaderText();
-        String actualFormFieldErrorMessage = newOpportunityPopup.getFormFieldErrorText();
 
-        softAssert.assertEquals(actualFormPageErrorMessage, expectedErrorMessage,
-                String.format("Not populated field '%s' should be displayed", expectedErrorMessage));
-        softAssert.assertTrue(actualFormFieldErrorMessage.contains(OPPORTUNITY_NAME.getFieldLabel()),
+        softAssert.assertTrue(newOpportunityPopup.isFormPageErrorDialogDisplayed(),
+                String.format("Error message %s is not displayed", "We hit a snag."));
+        softAssert.assertTrue(newOpportunityPopup.isFieldDisplayedInFormPageDialog(OPPORTUNITY_NAME),
                 String.format("Not populated field '%s' should be displayed", OPPORTUNITY_NAME.getFieldLabel()));
-        softAssert.assertAll();
-    }
-
-    @Test(description = "Verify that new Opportunity is not created when required fields is empty")
-    public void verifyOpportunityIsNotCreatedWithoutRequitedFieldTest() {
-        newOpportunityPopup = opportunitiesPage
-                .clickOnNewButton()
-                .enterOpportunityName(opportunityEmpty.getName());
-        newOpportunityPopup.clickOnSaveButton();
-
-        String actualFormFieldErrorMessage = newOpportunityPopup.getFormFieldErrorText();
-        softAssert.assertTrue(actualFormFieldErrorMessage.contains(CLOSE_DATE.getFieldLabel()),
-                String.format("Not populated field '%s' should be displayed", CLOSE_DATE.getFieldLabel()));
-        softAssert.assertTrue(actualFormFieldErrorMessage.contains(STAGE.getFieldLabel()),
-                String.format("Not populated field '%s' should be displayed", STAGE.getFieldLabel()));
         softAssert.assertAll();
     }
 
     @Test(description = "Verify appropriate error message appears under required fields")
     public void verifyErrorMessagesUnderRequiredFieldsTest() {
-        newOpportunityPopup = opportunitiesPage.clickOnNewButton();
-        newOpportunityPopup.clickOnSaveButton();
+        newOpportunityPopup = opportunitiesPage
+                .clickOnNewButton()
+                .clickOnSaveButton();
 
         String expectedErrorMessageUnderEmptyRequiredField = "Complete this field.";
+        String actualErrorMessageUnderOpportunityNameField = newOpportunityPopup.getErrorMessageUnderField(OPPORTUNITY_NAME);
+        String actualErrorMessageUnderStageField = newOpportunityPopup.getErrorMessageUnderField(STAGE);
+        String actualErrorMessageUnderCloseDateField = newOpportunityPopup.getErrorMessageUnderField(CLOSE_DATE);
 
-        String actualErrorMessageUnderOpportunityNameField = newOpportunityPopup.getErrorMessageUnderRequiredField(OPPORTUNITY_NAME.getFieldLabel());
-        String actualErrorMessageUnderStageField = newOpportunityPopup.getErrorMessageUnderRequiredField(STAGE.getFieldLabel());
-        String actualErrorMessageUnderCloseDateField = newOpportunityPopup.getErrorMessageUnderRequiredField(CLOSE_DATE.getFieldLabel());
-
+        softAssert.assertTrue(newOpportunityPopup.isFormPageErrorDialogDisplayed(),
+                String.format("Error message %s is not displayed", "We hit a snag."));
         softAssert.assertEquals(actualErrorMessageUnderStageField, expectedErrorMessageUnderEmptyRequiredField,
                 String.format("Error message under empty required field should be %s", expectedErrorMessageUnderEmptyRequiredField));
         softAssert.assertEquals(actualErrorMessageUnderOpportunityNameField, expectedErrorMessageUnderEmptyRequiredField,
                 String.format("Error message under empty required field should be %s", expectedErrorMessageUnderEmptyRequiredField));
         softAssert.assertEquals(actualErrorMessageUnderCloseDateField, expectedErrorMessageUnderEmptyRequiredField,
                 String.format("Error message under empty required field should be %s", expectedErrorMessageUnderEmptyRequiredField));
+        softAssert.assertAll();
+    }
 
-
-        String invalidCloseDate = "25.05.2022";
-        newOpportunityPopup.enterValuesInField(CLOSE_DATE.getFieldLabel(), invalidCloseDate);
-        newOpportunityPopup.clickOnSaveButton();
+    @Test
+    public void verifyErrorMessageUnderCloseDateFieldTest(){
+        newOpportunityPopup =  opportunitiesPage
+                .clickOnNewButton()
+                .enterValueIntoInputField(CLOSE_DATE, INVALID_CLOSE_DATE)
+                .clickOnSaveButton();
 
         String expectedErrorMessageUnderCloseDateField = "Your entry does not match the allowed format dd/MM/yyyy.";
-        actualErrorMessageUnderCloseDateField = newOpportunityPopup.getErrorMessageUnderRequiredField(CLOSE_DATE.getFieldLabel());
+        String actualErrorMessageUnderCloseDateField = newOpportunityPopup.getErrorMessageUnderField(CLOSE_DATE);
         softAssert.assertTrue(actualErrorMessageUnderCloseDateField.contains(expectedErrorMessageUnderCloseDateField),
                 String.format("Error message under empty required field should be %s", expectedErrorMessageUnderCloseDateField));
-        softAssert.assertAll();
+    }
+
+    @AfterMethod
+    public void clickCancel() {
+        opportunitiesPage = newOpportunityPopup.clickOnCancelButton();
     }
 }

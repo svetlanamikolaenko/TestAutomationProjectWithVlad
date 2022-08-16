@@ -1,6 +1,6 @@
-package com.salesforce.framework.enums;
+package com.salesforce.framework.enums.opportunity;
 
-public enum OpportunityTypes {
+public enum Types {
 
     EXISTING_CUSTOMER_UPGRADE("Existing Customer - Upgrade"),
     EXISTING_CUSTOMER_REPLACEMENT("Existing Customer - Replacement"),
@@ -9,7 +9,7 @@ public enum OpportunityTypes {
 
     private final String type;
 
-    OpportunityTypes(String type) {
+    Types(String type) {
         this.type = type;
     }
 

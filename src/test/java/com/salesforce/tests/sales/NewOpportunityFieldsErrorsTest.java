@@ -1,17 +1,16 @@
 package com.salesforce.tests.sales;
 
-import com.salesforce.framework.enums.SalesTabLabels;
+import com.salesforce.framework.enums.Customers;
 import com.salesforce.framework.models.Opportunity;
-import com.salesforce.framework.pages.SalesHomePage;
 import com.salesforce.framework.pages.opportunity.NewOpportunityPopup;
 import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
 import com.salesforce.tests.BaseTest;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.salesforce.framework.enums.OpportunityFieldsNames.*;
-
+import static com.salesforce.framework.enums.opportunity.FieldsNames.AMOUNT;
+import static com.salesforce.framework.enums.opportunity.FieldsNames.PROBABILITY;
 
 public class NewOpportunityFieldsErrorsTest extends BaseTest {
 
@@ -23,41 +22,42 @@ public class NewOpportunityFieldsErrorsTest extends BaseTest {
     private Opportunity opportunity;
     private NewOpportunityPopup newOpportunityPopup;
 
-
     @BeforeClass
-    public void setupData() {
+    public void navigateToOpportunities() {
+        opportunitiesPage = BROWSER
+                .loginAs(Customers.TEST_USER.getCustomer())
+                .openOpportunityTab();
         opportunity = dataProvider.generateOpportunityRequiredFields(OPPORTUNITY_RECORD_NAME);
-        SalesHomePage salesHomePage = setupHomePage.openSalesApplication();
-        opportunitiesPage = new OpportunitiesPage();
-        opportunitiesPage = salesHomePage.navigateToSalesTab(SalesTabLabels.OPPORTUNITIES.getTabLabel());
-    }
-
-    @AfterMethod
-    public void clickCancel() {
-        newOpportunityPopup.clickOnCancelButton();
     }
 
     @Test(description = "Verify appropriate error message appears under fields")
     public void verifyErrorMessageUnderNotRequiredFieldsTest(){
         newOpportunityPopup = opportunitiesPage
                 .clickOnNewButton()
-                .enterAllRequiredFields(opportunity);
-        newOpportunityPopup.enterValuesInField(PROBABILITY.getFieldLabel(), PROBABILITY_VALUE);
-        newOpportunityPopup.clickOnSaveButton();
-
-        String expectedErrorMessageUnderProbabilityField = "Probability must be between 0 and 100: Probability (%)";
-        String actualErrorMessageUnderProbabilityField = newOpportunityPopup.getErrorMessageUnderRequiredField(PROBABILITY.getFieldLabel());
-        softAssert.assertEquals(actualErrorMessageUnderProbabilityField, expectedErrorMessageUnderProbabilityField,
-                String.format("Error message under empty required field should be %s", expectedErrorMessageUnderProbabilityField));
-        softAssert.assertAll();
-
-        newOpportunityPopup.enterValuesInField(AMOUNT.getFieldLabel(), AMOUNT_VALUE);
-        newOpportunityPopup.clickOnSaveButton();
+                .enterAllRequiredFields(opportunity)
+                .enterValueIntoInputField(PROBABILITY, PROBABILITY_VALUE)
+                .clickOnSaveButton();
 
         String expectedErrorMessageUnderAmountField = "Amount: value outside of valid range on numeric field:";
-        String actualErrorMessageUnderAmountField = newOpportunityPopup.getErrorMessageUnderRequiredField(AMOUNT.getFieldLabel());
+        String expectedErrorMessageUnderProbabilityField = "Probability must be between 0 and 100: Probability (%)";
+        String actualErrorMessageUnderProbabilityField = newOpportunityPopup.getErrorMessageUnderField(PROBABILITY);
+
+        newOpportunityPopup = newOpportunityPopup
+                .enterValueIntoInputField(AMOUNT, AMOUNT_VALUE)
+                .clickOnSaveButton();
+
+        String actualErrorMessageUnderAmountField = newOpportunityPopup.getErrorMessageUnderField(AMOUNT);
+
+        softAssert.assertEquals(actualErrorMessageUnderProbabilityField, expectedErrorMessageUnderProbabilityField,
+                String.format("Error message under empty required field should be %s", expectedErrorMessageUnderProbabilityField));
         softAssert.assertTrue(actualErrorMessageUnderAmountField.contains(expectedErrorMessageUnderAmountField),
                 String.format("Error message under empty required field should be %s", expectedErrorMessageUnderAmountField));
         softAssert.assertAll();
+    }
+
+
+    @AfterClass
+    public void clickCancel() {
+        opportunitiesPage = newOpportunityPopup.clickOnCancelButton();
     }
 }

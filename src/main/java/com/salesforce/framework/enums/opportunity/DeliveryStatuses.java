@@ -1,6 +1,6 @@
-package com.salesforce.framework.enums;
+package com.salesforce.framework.enums.opportunity;
 
-public enum OpportunityDeliveryStatuses {
+public enum DeliveryStatuses {
 
     IN_PROGRESS("In progress"),
     COMPLETED("Completed"),
@@ -8,7 +8,7 @@ public enum OpportunityDeliveryStatuses {
 
     private final String status;
 
-    OpportunityDeliveryStatuses(String status) {
+    DeliveryStatuses(String status) {
         this.status = status;
     }
 

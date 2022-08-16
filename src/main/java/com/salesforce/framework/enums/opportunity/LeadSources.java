@@ -1,6 +1,6 @@
-package com.salesforce.framework.enums;
+package com.salesforce.framework.enums.opportunity;
 
-public enum OpportunityLeadSources {
+public enum LeadSources {
 
     WEB("Web"),
     PHONE_INQUIRY("Phone Inquiry"),
@@ -10,7 +10,7 @@ public enum OpportunityLeadSources {
 
     private final String leadSource;
 
-    OpportunityLeadSources(String leadSource){
+    LeadSources(String leadSource){
         this.leadSource = leadSource;
     }
 

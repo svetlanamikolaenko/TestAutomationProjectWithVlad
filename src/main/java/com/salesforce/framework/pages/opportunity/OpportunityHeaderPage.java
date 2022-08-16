@@ -1,31 +1,34 @@
 package com.salesforce.framework.pages.opportunity;
 
-import com.salesforce.framework.pages.SalesHomePage;
+import com.salesforce.framework.pages.HomePage;
 import io.qameta.allure.Step;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class OpportunityHeaderPage extends SalesHomePage {
+public class OpportunityHeaderPage extends HomePage {
 
     @FindBy(xpath = "//*[text()='Opportunity']")
     private WebElement opportunityTitleLabel;
 
-    @FindBy(xpath = "//*[@id='detailTab__item']")
+    @FindBy(xpath = "//a[@data-label='Details']")
     private WebElement opportunityRecordDetailsTab;
 
     private static final String OPPORTUNITY_RECORD_LABEL_FORMAT = "//*[text()='Opportunity']/..//*[text()='%s']";
 
-    @Step("Get Opportunity Record Label")
-    public boolean isOpportunityRecordLabelDisplayed(String opportunityName){
-        waitUntilLoaded();
-        waitHelper().waitLocatorUntilVisible(String.format(OPPORTUNITY_RECORD_LABEL_FORMAT, opportunityName));
-        return findElementByXpath(String.format(OPPORTUNITY_RECORD_LABEL_FORMAT, opportunityName)).isDisplayed();
+    @Step("Opportunity Record Label '{0}' is displayed")
+    public boolean isOpportunityRecordLabelDisplayed(String opportunityName) {
+        try {
+            return findElementByXpath(String.format(OPPORTUNITY_RECORD_LABEL_FORMAT, opportunityName)).isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 
-    @Step("Open Opportunity Record Details Tab")
+    @Step("Open 'Details' Tab")
     public OpportunityDetailsPage openOpportunityRecordDetailsTab(){
         waitHelper().waitElementUntilVisible(opportunityRecordDetailsTab);
-        jsHelper().clickJS(opportunityRecordDetailsTab);
+        opportunityRecordDetailsTab.click();
         return new OpportunityDetailsPage();
     }
 
