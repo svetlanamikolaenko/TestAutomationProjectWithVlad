@@ -52,7 +52,7 @@ public class NewOpportunityPopup extends OpportunitiesPage{
     @FindBy(xpath = "//div[contains(@class, 'forceFormPageError')]")
     private WebElement formPageErrorDialog;
 
-    @FindBy(xpath = "//div[contains(@class, 'forceFormPageError')]//*[contains(@class,'pageErrorHeader')]")
+    @FindBy(xpath = "//*[contains(@class,'pageErrorHeader')]")
     private WebElement formPageErrorDialogHeader;
 
     @FindBy(xpath = "//div[contains(@class, 'forceFormPageError')]//*[contains(@class,'fieldLevelErrors')]")
@@ -191,7 +191,7 @@ public class NewOpportunityPopup extends OpportunitiesPage{
         return this;
     }
 
-    @Step("Get error message in the form header '{0}'")
+    @Step("Get error message in the form header")
     public String getFormPageErrorDialogHeaderText(){
         waitHelper().waitElementUntilVisible(formPageErrorDialog);
         return formPageErrorDialogHeader.getText();

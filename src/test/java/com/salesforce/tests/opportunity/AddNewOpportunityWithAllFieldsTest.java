@@ -1,4 +1,4 @@
-package com.salesforce.tests.sales;
+package com.salesforce.tests.opportunity;
 
 import com.salesforce.framework.enums.Customers;
 import com.salesforce.framework.enums.opportunity.FieldsNames;
@@ -6,7 +6,6 @@ import com.salesforce.framework.models.Opportunity;
 import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
 import com.salesforce.framework.pages.opportunity.OpportunityDetailsPage;
 import com.salesforce.tests.BaseTest;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -68,27 +67,27 @@ public class AddNewOpportunityWithAllFieldsTest extends BaseTest {
         String actualDescription = detailsPage.getOpportunityFieldValue(DESCRIPTION);
 
         softAssert.assertTrue(detailsPage.isOpportunityRecordLabelDisplayed(opportunityAll.getName()),
-                String.format("Opportunity record page 'Label' should be %s", opportunityAll.getName()));
+                String.format("Opportunity record page 'Label' should be '%s'", opportunityAll.getName()));
         softAssert.assertEquals(actualRecordName, opportunityAll.getName(),
-                String.format("Opportunity 'Name' should be %s", opportunityAll.getName()));
+                String.format("Opportunity 'Name' should be '%s'", opportunityAll.getName()));
         softAssert.assertEquals(actualStage, opportunityAll.getStage(),
-                String.format("Opportunity 'Stage' should be %s", opportunityAll.getStage()));
+                String.format("Opportunity 'Stage' should be '%s'", opportunityAll.getStage()));
         softAssert.assertEquals(actualCloseDate, opportunityAll.getCloseDate(),
-                String.format("Opportunity 'Close Date' should be %s", opportunityAll.getCloseDate()));
+                String.format("Opportunity 'Close Date' should be '%s'", opportunityAll.getCloseDate()));
         softAssert.assertEquals(actualAmount, opportunityAll.getAmount(),
-                String.format("Opportunity 'Amount' should be %s", opportunityAll.getAmount()));
+                String.format("Opportunity 'Amount' should be '%s'", opportunityAll.getAmount()));
         softAssert.assertEquals(actualNextStep, opportunityAll.getNextStep(),
-                String.format("Opportunity 'Next Step' should be %s", opportunityAll.getNextStep()));
+                String.format("Opportunity 'Next Step' should be '%s'", opportunityAll.getNextStep()));
         softAssert.assertEquals(actualOrderNumber, opportunityAll.getOrderNumber(),
-                String.format("Opportunity 'Order Number' should be %s", opportunityAll.getOrderNumber()));
+                String.format("Opportunity 'Order Number' should be '%s'", opportunityAll.getOrderNumber()));
         softAssert.assertEquals(actualTrackingNumber, opportunityAll.getTrackingNumber(),
-                String.format("Opportunity 'Tracking Number' should be %s", opportunityAll.getTrackingNumber()));
+                String.format("Opportunity 'Tracking Number' should be '%s'", opportunityAll.getTrackingNumber()));
         softAssert.assertEquals(actualType, opportunityAll.getType(),
-                String.format("Opportunity 'Type' should be %s", opportunityAll.getType()));
+                String.format("Opportunity 'Type' should be '%s'", opportunityAll.getType()));
         softAssert.assertEquals(actualMainCompetitor, opportunityAll.getMainCompetitor(),
-                String.format("Opportunity 'Main Competitor(s)' should be %s", opportunityAll.getMainCompetitor()));
+                String.format("Opportunity 'Main Competitor(s)' should be '%s'", opportunityAll.getMainCompetitor()));
         softAssert.assertEquals(actualDescription, opportunityAll.getDescription(),
-                String.format("Opportunity 'Description' should be %s", opportunityAll.getDescription()));
+                String.format("Opportunity 'Description' should be '%s'", opportunityAll.getDescription()));
         softAssert.assertAll();
     }
 }

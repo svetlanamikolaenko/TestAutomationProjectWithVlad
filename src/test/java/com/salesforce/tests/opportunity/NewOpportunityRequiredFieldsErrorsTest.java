@@ -1,4 +1,4 @@
-package com.salesforce.tests.sales;
+package com.salesforce.tests.opportunity;
 
 import com.salesforce.framework.enums.Customers;
 import com.salesforce.framework.models.Opportunity;
@@ -33,9 +33,8 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
                 .enterValueIntoInputField(CLOSE_DATE, opportunity.getCloseDate())
                 .clickOnSaveButton();
 
-
         softAssert.assertTrue(newOpportunityPopup.isFormPageErrorDialogDisplayed(),
-                String.format("Error message %s is not displayed", "We hit a snag."));
+               "Error message 'We hit a snag.' is not displayed");
         softAssert.assertTrue(newOpportunityPopup.isFieldDisplayedInFormPageDialog(OPPORTUNITY_NAME),
                 String.format("Not populated field '%s' should be displayed", OPPORTUNITY_NAME.getFieldLabel()));
         softAssert.assertAll();
@@ -53,13 +52,13 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
         String actualErrorMessageUnderCloseDateField = newOpportunityPopup.getErrorMessageUnderField(CLOSE_DATE);
 
         softAssert.assertTrue(newOpportunityPopup.isFormPageErrorDialogDisplayed(),
-                String.format("Error message %s is not displayed", "We hit a snag."));
+                "Error message 'We hit a snag.' is not displayed");
         softAssert.assertEquals(actualErrorMessageUnderStageField, expectedErrorMessageUnderEmptyRequiredField,
-                String.format("Error message under empty required field should be %s", expectedErrorMessageUnderEmptyRequiredField));
+                String.format("Error message under empty required field should be '%s'", expectedErrorMessageUnderEmptyRequiredField));
         softAssert.assertEquals(actualErrorMessageUnderOpportunityNameField, expectedErrorMessageUnderEmptyRequiredField,
-                String.format("Error message under empty required field should be %s", expectedErrorMessageUnderEmptyRequiredField));
+                String.format("Error message under empty required field should be '%s'", expectedErrorMessageUnderEmptyRequiredField));
         softAssert.assertEquals(actualErrorMessageUnderCloseDateField, expectedErrorMessageUnderEmptyRequiredField,
-                String.format("Error message under empty required field should be %s", expectedErrorMessageUnderEmptyRequiredField));
+                String.format("Error message under empty required field should be '%s'", expectedErrorMessageUnderEmptyRequiredField));
         softAssert.assertAll();
     }
 
@@ -73,7 +72,7 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
         String expectedErrorMessageUnderCloseDateField = "Your entry does not match the allowed format dd/MM/yyyy.";
         String actualErrorMessageUnderCloseDateField = newOpportunityPopup.getErrorMessageUnderField(CLOSE_DATE);
         softAssert.assertTrue(actualErrorMessageUnderCloseDateField.contains(expectedErrorMessageUnderCloseDateField),
-                String.format("Error message under empty required field should be %s", expectedErrorMessageUnderCloseDateField));
+                String.format("Error message under empty required field should be '%s'", expectedErrorMessageUnderCloseDateField));
     }
 
     @AfterMethod

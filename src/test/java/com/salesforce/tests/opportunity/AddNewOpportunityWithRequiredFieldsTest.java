@@ -1,12 +1,10 @@
-package com.salesforce.tests.sales;
+package com.salesforce.tests.opportunity;
 
 import com.salesforce.framework.enums.Customers;
 import com.salesforce.framework.models.Opportunity;
 import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
 import com.salesforce.framework.pages.opportunity.OpportunityDetailsPage;
 import com.salesforce.tests.BaseTest;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

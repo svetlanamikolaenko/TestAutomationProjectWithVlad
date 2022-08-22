@@ -19,34 +19,16 @@ import static com.salesforce.framework.browser.Browser.getWebDriver;
 
 public class AllureListener extends AllureTestNg {
 
+    @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println("*** Test execution " + result.getMethod().getMethodName() + " failed...");
-        System.out.println(result.getMethod().getMethodName() + " failed!");
-
-        ITestContext context = result.getTestContext();
-        WebDriver driver = (WebDriver) context.getAttribute("driver");
-
-        // attach screenshots to report
-        saveFailureScreenShot(driver);
+        File screenshot = ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.FILE);
+        try {
+            Allure.addAttachment(screenshot.getName(), new FileInputStream(screenshot));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        super.onTestFailure(result);
     }
-
-
-    @Attachment
-    public byte[] saveFailureScreenShot(WebDriver driver) {
-        return ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
-    }
-//
-//
-//    @Override
-//    public void onTestFailure(ITestResult result) {
-//        File screenshot = ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.FILE);
-//        try {
-//            Allure.addAttachment(screenshot.getName(), new FileInputStream(screenshot));
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        super.onTestFailure(result);
-//    }
 //
 //    @Override
 //    public void afterInvocation(IInvokedMethod method, ITestResult testResult) {

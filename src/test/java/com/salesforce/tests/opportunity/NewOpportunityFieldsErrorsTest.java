@@ -1,4 +1,4 @@
-package com.salesforce.tests.sales;
+package com.salesforce.tests.opportunity;
 
 import com.salesforce.framework.enums.Customers;
 import com.salesforce.framework.models.Opportunity;
@@ -49,9 +49,9 @@ public class NewOpportunityFieldsErrorsTest extends BaseTest {
         String actualErrorMessageUnderAmountField = newOpportunityPopup.getErrorMessageUnderField(AMOUNT);
 
         softAssert.assertEquals(actualErrorMessageUnderProbabilityField, expectedErrorMessageUnderProbabilityField,
-                String.format("Error message under empty required field should be %s", expectedErrorMessageUnderProbabilityField));
+                String.format("Error message under empty required field should be '%s'", expectedErrorMessageUnderProbabilityField));
         softAssert.assertTrue(actualErrorMessageUnderAmountField.contains(expectedErrorMessageUnderAmountField),
-                String.format("Error message under empty required field should be %s", expectedErrorMessageUnderAmountField));
+                String.format("Error message under empty required field should be '%s'", expectedErrorMessageUnderAmountField));
         softAssert.assertAll();
     }
 
