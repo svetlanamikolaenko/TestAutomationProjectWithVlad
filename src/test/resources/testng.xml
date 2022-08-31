@@ -11,6 +11,8 @@
             <class name="com.salesforce.tests.opportunity.AddNewOpportunityWithAllFieldsTest"/>
             <class name="com.salesforce.tests.opportunity.NewOpportunityFieldsErrorsTest"/>
             <class name="com.salesforce.tests.opportunity.NewOpportunityRequiredFieldsErrorsTest"/>
+            <class name="com.salesforce.tests.opportunity.EditOpportunityTest"/>
+            <class name="com.salesforce.tests.opportunity.DeleteOpportunityTest"/>
         </classes>
     </test>
 </suite>

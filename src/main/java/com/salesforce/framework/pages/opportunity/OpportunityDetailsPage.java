@@ -14,6 +14,8 @@ public class OpportunityDetailsPage extends OpportunityHeaderPage {
         return findElementByXpath(String.format(OPPORTUNITY_FIELD_VALUE_FORMAT, fieldLabel)).getText();
     }
 
+
+
     @Override
     public void waitUntilLoaded() {
         super.waitUntilLoaded();
