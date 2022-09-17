@@ -1,11 +1,16 @@
 package com.salesforce.framework.pages.opportunity;
 
+import com.salesforce.framework.enums.SalesTabLabels;
 import com.salesforce.framework.models.Opportunity;
 import com.salesforce.framework.pages.HomePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class OpportunitiesPage extends HomePage {
@@ -31,8 +36,56 @@ public class OpportunitiesPage extends HomePage {
     @FindBy(xpath = "//*[@name='Opportunity-search-input']")
     private WebElement searchOpportunityField;
 
+    @FindBy(xpath = "//table//descendant::tr/td/following-sibling::th/descendant::a")
+    private List<WebElement> recordsLinks;
+
     private static final String OPPORTUNITY_NAME_FORMAT = "//a[text()='%s']";
     private static final String OPPORTUNITY_ACTION_MENU_FORMAT = "//a[text()='%s']//ancestor::tr//td//a[last()]";
+
+    @Step("Open 'Home' tab")
+    public HomePage openHomeTab() {
+        navigateToSalesTab(SalesTabLabels.HOME);
+        return new HomePage();
+    }
+
+    @Step("Get opportunity records links")
+    public List<String> getOpportunityRecordsNames() {
+        return recordsLinks
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+    }
+
+    @Step("Get all opportunities with name '{0}'")
+    public List<WebElement> getOpportunityWithName(String name) {
+        waitHelper().waitElementsUntilVisible(recordsLinks);
+        return recordsLinks
+                .stream()
+                .filter(record -> record.getText().equals(name))
+                .collect(Collectors.toList());
+    }
+
+    @Step("Open first opportunity with name '{0}'")
+    public OpportunityDetailsPage openFirstOpportunityWithName(String name) {
+        waitHelper().waitLocatorUntilVisible(String.format(OPPORTUNITY_NAME_FORMAT, name));
+        getOpportunityWithName(name).get(0).click();
+        return new OpportunityDetailsPage();
+    }
+
+    @Step("Get opportunity links with name '{0}'")
+    public List<String> getOpportunityLinksWithName(String name) {
+        waitHelper().waitElementsUntilVisible(recordsLinks);
+        return getOpportunityWithName(name)
+                .stream()
+                .map(element -> element.getAttribute("href"))
+                .collect(Collectors.toList());
+    }
+
+    @Step("Get first opportunity id with name '{0}'")
+    public String getFirstOpportunityIdWithName(String name) {
+        List<String> list = Arrays.asList(getOpportunityLinksWithName(name).get(0).split("/"));
+        return list.get(list.size() - 2);
+    }
 
     @Step("Click on 'New' button")
     public NewOpportunityPopup clickOnNewButton() {

@@ -52,6 +52,10 @@ public class Browser {
         return new LoginPage();
     }
 
+    public String getCurrentUrl(){
+        return getWebDriver().getCurrentUrl();
+    }
+
     @Step("Login as ['{customer.email}', '{customer.password}']")
     public HomePage loginAs(Customer customer) {
         LoginPage loginPage = openLoginPage();

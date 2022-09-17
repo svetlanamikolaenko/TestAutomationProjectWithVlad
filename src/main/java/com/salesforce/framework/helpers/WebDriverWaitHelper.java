@@ -9,12 +9,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class WebDriverWaitHelper {
     protected final int TIME_OUT = 10;
 
     public void waitElementUntilVisible(WebElement element) {
         getWebDriverWait().until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitElementsUntilVisible(List<WebElement> elements) {
+        getWebDriverWait().until(ExpectedConditions.visibilityOfAllElements(elements));
     }
 
     public void waitUntilTextToBePresent(WebElement element, String text) {

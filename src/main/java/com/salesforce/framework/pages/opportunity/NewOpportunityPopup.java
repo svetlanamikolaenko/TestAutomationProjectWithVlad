@@ -6,6 +6,9 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.salesforce.framework.enums.opportunity.FieldsNames.*;
 
 public class NewOpportunityPopup extends OpportunitiesPage{
@@ -58,6 +61,9 @@ public class NewOpportunityPopup extends OpportunitiesPage{
     @FindBy(xpath = "//div[contains(@class, 'forceFormPageError')]//*[contains(@class,'fieldLevelErrors')]")
     private WebElement formFieldErrorDialog;
 
+    @FindBy(xpath = "//label[text()='Stage']/following-sibling::div//*[@data-item-id]")
+    List<WebElement> stagesDropDownList;
+
     private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@role='option'][@data-value='%s']";
     private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']//..//input[@type='text']";
     private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//..//..//*[@class='slds-form-element__help']";
@@ -97,6 +103,13 @@ public class NewOpportunityPopup extends OpportunitiesPage{
         waitHelper().waitLocatorUntilVisible(String.format(VALUE_IN_PICKLIST_FORMAT, option));
         jsHelper().clickJS(findElementByXpath(String.format(VALUE_IN_PICKLIST_FORMAT, option)));
         return this;
+    }
+
+    public List<String> getValuesInStageDropDown(){
+        waitHelper().waitElementUntilVisible(stagesDropDownList.get(0));
+        return stagesDropDownList.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
     }
 
     @Step("Select '{1}' in picklist '{label.fieldLabel}'")
