@@ -61,5 +61,6 @@ public class LoginPage extends AbstractPage {
 
     @Override
     protected void waitUntilLoaded() {
+        jsHelper().allElementsLoaded();
     }
 }

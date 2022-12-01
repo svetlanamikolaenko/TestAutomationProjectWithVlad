@@ -5,6 +5,7 @@ import com.salesforce.framework.models.Opportunity;
 import com.salesforce.framework.pages.opportunity.NewOpportunityPopup;
 import com.salesforce.framework.pages.opportunity.OpportunitiesPage;
 import com.salesforce.tests.BaseTest;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -51,8 +52,6 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
         String actualErrorMessageUnderStageField = newOpportunityPopup.getErrorMessageUnderField(STAGE);
         String actualErrorMessageUnderCloseDateField = newOpportunityPopup.getErrorMessageUnderField(CLOSE_DATE);
 
-        softAssert.assertTrue(newOpportunityPopup.isFormPageErrorDialogDisplayed(),
-                "Error message 'We hit a snag.' is not displayed");
         softAssert.assertEquals(actualErrorMessageUnderStageField, expectedErrorMessageUnderEmptyRequiredField,
                 String.format("Error message under empty required field should be '%s'", expectedErrorMessageUnderEmptyRequiredField));
         softAssert.assertEquals(actualErrorMessageUnderOpportunityNameField, expectedErrorMessageUnderEmptyRequiredField,
@@ -71,7 +70,7 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
 
         String expectedErrorMessageUnderCloseDateField = "Your entry does not match the allowed format dd/MM/yyyy.";
         String actualErrorMessageUnderCloseDateField = newOpportunityPopup.getErrorMessageUnderField(CLOSE_DATE);
-        softAssert.assertTrue(actualErrorMessageUnderCloseDateField.contains(expectedErrorMessageUnderCloseDateField),
+        Assert.assertEquals(actualErrorMessageUnderCloseDateField, expectedErrorMessageUnderCloseDateField,
                 String.format("Error message under empty required field should be '%s'", expectedErrorMessageUnderCloseDateField));
     }
 

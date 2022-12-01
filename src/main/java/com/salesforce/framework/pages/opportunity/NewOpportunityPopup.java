@@ -66,7 +66,7 @@ public class NewOpportunityPopup extends OpportunitiesPage{
 
     private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@role='option'][@data-value='%s']";
     private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']//..//input[@type='text']";
-    private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//..//..//*[@class='slds-form-element__help']";
+    private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//ancestor::*[@name='inputField']//*[contains(@class, 'help')]";
     private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/..//button[@type='button']";
 
     @Step("Enter '{1}' into {label.fieldLabel}")
