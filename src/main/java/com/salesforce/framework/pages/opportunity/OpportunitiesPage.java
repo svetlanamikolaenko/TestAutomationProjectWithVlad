@@ -36,7 +36,7 @@ public class OpportunitiesPage extends HomePage {
     @FindBy(xpath = "//*[@name='Opportunity-search-input']")
     private WebElement searchOpportunityField;
 
-    @FindBy(xpath = "//table//descendant::tr/td/following-sibling::th/descendant::a")
+    @FindBy(xpath = "//table[descendant::*[text()='Opportunity Name']]//a[@data-refid]")
     private List<WebElement> recordsLinks;
 
     private static final String OPPORTUNITY_NAME_FORMAT = "//a[text()='%s']";

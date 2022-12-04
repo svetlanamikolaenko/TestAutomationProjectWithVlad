@@ -27,9 +27,10 @@ public class HomePage extends AbstractPage {
 
     @Step("Is 'Recent Records Card' displayed")
     public boolean isRecentRecordsCardDisplayed(){
+        jsHelper().scrollToBottom();
+        jsHelper().allElementsLoaded();
         jsHelper().refreshBrowser();
         try {
-            jsHelper().scrollToBottom();
             waitHelper().waitElementUntilVisible(recentRecordsCard);
             return recentRecordsCard.isDisplayed();
         } catch (NoSuchElementException e){

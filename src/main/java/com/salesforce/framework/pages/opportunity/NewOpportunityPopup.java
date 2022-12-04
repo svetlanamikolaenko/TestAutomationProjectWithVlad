@@ -3,6 +3,7 @@ package com.salesforce.framework.pages.opportunity;
 import com.salesforce.framework.enums.opportunity.FieldsNames;
 import com.salesforce.framework.models.Opportunity;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -13,38 +14,8 @@ import static com.salesforce.framework.enums.opportunity.FieldsNames.*;
 
 public class NewOpportunityPopup extends OpportunitiesPage{
 
-    @FindBy (xpath = "//div[contains(@class, 'modal')]//h2[text()='New Opportunity']")
+    @FindBy (xpath = "//*[contains(@class, 'modal')]//*[text()='New Opportunity']")
     private WebElement newOpportunityModalWindow;
-
-    @FindBy(xpath = "//label[text()='Opportunity Name']//..//input[@type='text']")
-    private WebElement opportunityNameTextField;
-
-    @FindBy(xpath = "//label[text()='Close Date']//..//input[@type='text']")
-    private WebElement closeDatePickerField;
-
-    @FindBy(xpath = "//label[text()='Amount']//..//input[@type='text']")
-    private WebElement amountField;
-
-    @FindBy(xpath = "//label[text()='Next Step']//..//input[@type='text']")
-    private WebElement nextStepTextField;
-
-    @FindBy(xpath = "//label[text()='Tracking Number']//..//input[@type='text']")
-    private WebElement trackingNumberField;
-
-    @FindBy(xpath = "//label[text()='Order Number']//..//input[@type='text']")
-    private WebElement orderNumberField;
-
-    @FindBy(xpath = "//label[text()='Probability (%)']//..//input[@type='text']")
-    private WebElement probabilityField;
-
-    @FindBy(xpath = "//label[text()='Current Generator(s)']//..//input[@type='text']")
-    private WebElement currentGeneratorField;
-
-    @FindBy(xpath = "//label[text()='Main Competitor(s)']//..//input[@type='text']")
-    private WebElement mainCompetitorField;
-
-    @FindBy(xpath = "//label[text()='Description']//..//textarea")
-    private WebElement descriptionField;
 
     @FindBy(xpath = "//button[@name='SaveEdit']")
     private WebElement saveOpportunityButton;
@@ -58,16 +29,16 @@ public class NewOpportunityPopup extends OpportunitiesPage{
     @FindBy(xpath = "//*[contains(@class,'pageErrorHeader')]")
     private WebElement formPageErrorDialogHeader;
 
-    @FindBy(xpath = "//div[contains(@class, 'forceFormPageError')]//*[contains(@class,'fieldLevelErrors')]")
+    @FindBy(xpath = "//*[contains(@class,'fieldLevelErrors')]")
     private WebElement formFieldErrorDialog;
 
     @FindBy(xpath = "//label[text()='Stage']/following-sibling::div//*[@data-item-id]")
     List<WebElement> stagesDropDownList;
 
     private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@role='option'][@data-value='%s']";
-    private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']//..//input[@type='text']";
+    private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']/parent::*//*[contains(@id, 'input')]";
     private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//ancestor::*[@name='inputField']//*[contains(@class, 'help')]";
-    private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/..//button[@type='button']";
+    private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/parent::*//button";
 
     @Step("Enter '{1}' into {label.fieldLabel}")
     public NewOpportunityPopup enterValueIntoInputField(FieldsNames label, String value){
@@ -150,57 +121,49 @@ public class NewOpportunityPopup extends OpportunitiesPage{
 
     @Step("Enter '{opportunity.amount}'")
     public NewOpportunityPopup enterAmount(Opportunity opportunity){
-        amountField.clear();
-        amountField.sendKeys(String.valueOf(opportunity.getAmount()));
+        enterValueIntoInputField(AMOUNT, String.valueOf(opportunity.getAmount()));
         return this;
     }
 
     @Step("Enter '{opportunity.nextStep}'")
     public NewOpportunityPopup enterNextStep(Opportunity opportunity){
-        nextStepTextField.clear();
-        nextStepTextField.sendKeys(opportunity.getNextStep());
+        enterValueIntoInputField(NEXT_STEP, String.valueOf(opportunity.getNextStep()));
         return this;
     }
 
     @Step("Enter '{opportunity.orderNumber}'")
     public NewOpportunityPopup enterOrderNumber(Opportunity opportunity){
-        orderNumberField.clear();
-        orderNumberField.sendKeys(String.valueOf(opportunity.getOrderNumber()));
+        enterValueIntoInputField(ORDER_NUMBER, String.valueOf(opportunity.getOrderNumber()));
         return this;
     }
 
     @Step("Enter '{opportunity.probability}'")
     public NewOpportunityPopup enterProbability(Opportunity opportunity){
-        probabilityField.clear();
-        probabilityField.sendKeys(String.valueOf(opportunity.getProbability()));
+        enterValueIntoInputField(PROBABILITY, String.valueOf(opportunity.getProbability()));
         return this;
     }
 
     @Step("Enter '{opportunity.trackingNumber}'")
     public NewOpportunityPopup enterTrackingNumber(Opportunity opportunity){
-        trackingNumberField.clear();
-        trackingNumberField.sendKeys(opportunity.getTrackingNumber());
+        enterValueIntoInputField(TRACKING_NUMBER, opportunity.getTrackingNumber());
         return this;
     }
 
     @Step("Enter '{opportunity.currentGenerator}'")
     public NewOpportunityPopup enterCurrentGenerator(Opportunity opportunity){
-        currentGeneratorField.clear();
-        currentGeneratorField.sendKeys(opportunity.getCurrentGenerator());
+        enterValueIntoInputField(CURRENT_GENERATOR, opportunity.getCurrentGenerator());
         return this;
     }
 
     @Step("Enter '{opportunity.mainCompetitor}'")
     public NewOpportunityPopup enterMainCompetitor(Opportunity opportunity){
-        mainCompetitorField.clear();
-        mainCompetitorField.sendKeys(opportunity.getMainCompetitor());
+        enterValueIntoInputField(TRACKING_NUMBER, opportunity.getMainCompetitor());
         return this;
     }
 
     @Step("Enter '{opportunity.description}'")
     public NewOpportunityPopup enterDescription(Opportunity opportunity){
-        descriptionField.clear();
-        descriptionField.sendKeys(opportunity.getDescription());
+        enterValueIntoInputField(DESCRIPTION, opportunity.getDescription());
         return this;
     }
 

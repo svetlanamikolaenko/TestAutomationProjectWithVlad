@@ -21,11 +21,11 @@ public class JavaScriptHelper {
     }
 
     public void scrollToBottom() {
-        ((JavascriptExecutor) Browser.getWebDriver()).executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        ((JavascriptExecutor) Browser.getWebDriver()).executeScript("scrollBy(0,document.body.scrollHeight || document.documentElement.scrollHeight)", "");
     }
 
     public void scrollToTop() {
-        ((JavascriptExecutor) Browser.getWebDriver()).executeScript("window.scrollBy(0, -document.body.scrollHeight);");
+        ((JavascriptExecutor) Browser.getWebDriver()).executeScript("scrollBy(0,-document.body.scrollHeight || -document.documentElement.scrollHeight)", "");
     }
 
     public void refreshBrowser() {
