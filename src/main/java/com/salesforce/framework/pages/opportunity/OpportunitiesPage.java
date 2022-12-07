@@ -24,10 +24,10 @@ public class OpportunitiesPage extends HomePage {
     @FindBy(xpath = "//div[contains(@class,'forceActionsDropDownMenuList')]")
     private WebElement dropDownMenu;
 
-    @FindBy(xpath = "//a[@role='menuitem']/div[@title='Edit']")
+    @FindBy(xpath = "//a[@title='Edit']")
     private WebElement editButton;
 
-    @FindBy(xpath = "//a[@role='menuitem']/div[@title='Delete']")
+    @FindBy(xpath = "//a[@title='Delete']")
     private WebElement deleteButton;
 
     @FindBy(xpath = "//table[contains(@class, 'forceRecordLayout')]")
@@ -36,11 +36,11 @@ public class OpportunitiesPage extends HomePage {
     @FindBy(xpath = "//*[@name='Opportunity-search-input']")
     private WebElement searchOpportunityField;
 
-    @FindBy(xpath = "//table[descendant::*[text()='Opportunity Name']]//a[@data-refid]")
+    @FindBy(xpath = "//th[descendant::*[@data-refid]]//a")
     private List<WebElement> recordsLinks;
 
     private static final String OPPORTUNITY_NAME_FORMAT = "//a[text()='%s']";
-    private static final String OPPORTUNITY_ACTION_MENU_FORMAT = "//a[text()='%s']//ancestor::tr//td//a[last()]";
+    private static final String OPPORTUNITY_ACTION_MENU_FORMAT = "//tr[descendant::*[text()='%s']]//*[contains(@class, 'rowActions')]";
 
     @Step("Open 'Home' tab")
     public HomePage openHomeTab() {

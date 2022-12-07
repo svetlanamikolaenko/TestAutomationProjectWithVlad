@@ -7,20 +7,21 @@ import org.openqa.selenium.support.FindBy;
 
 public class EditOpportunityPopup extends OpportunitiesPage{
 
-    @FindBy(xpath = "//div[contains(@class, 'modal')]//h2[contains(text(),'Edit')]")
+    @FindBy(xpath = "//h2[contains(text(),'Edit')]")
     private WebElement editOpportunityModalWindow;
 
     @FindBy(xpath = "//button[@name='SaveEdit']")
     private WebElement saveOpportunityButton;
 
-    private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']//..//input[@type='text']";
+    //private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']/parent::*//*[contains(@id, 'input')]";
+    private static final String INPUT_FIELD_TEXT_INPUT_FORMAT = "//*[@name='inputField'][descendant::label[text()='%s']]//input";
 
     @Step("Enter '{1}' into {label.fieldLabel}")
     public EditOpportunityPopup changeValueInField(FieldsNames label, String value){
         String fieldLabel = label.getFieldLabel();
-        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_FORMAT, fieldLabel));
-        findElementByXpath(String.format(INPUT_FIELD_FORMAT, fieldLabel)).clear();
-        findElementByXpath(String.format(INPUT_FIELD_FORMAT, fieldLabel)).sendKeys(value);
+        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_TEXT_INPUT_FORMAT, fieldLabel));
+        findElementByXpath(String.format(INPUT_FIELD_TEXT_INPUT_FORMAT, fieldLabel)).clear();
+        findElementByXpath(String.format(INPUT_FIELD_TEXT_INPUT_FORMAT, fieldLabel)).sendKeys(value);
         return this;
     }
 

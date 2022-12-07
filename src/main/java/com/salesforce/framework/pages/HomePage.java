@@ -7,7 +7,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ public class HomePage extends AbstractPage {
     @FindBy(xpath = "//*[text()='Recent Records']")
     private WebElement recentRecordsCard;
 
-    @FindBy(xpath = "//*[text()='Recent Records']//ancestor::div[contains(@class,'homeHomeCard ')]//*[@class='recentsRecordCardList']//*[contains(@class,'recentsRecordCardRow')]//a")
+    @FindBy(xpath = "//*[contains(@class,'recentsRecordCardRow')]//a")
     private List<WebElement> recentRecordsList;
 
     private final static String SALES_TAB_LABEL_FORMAT = "//*[contains(@class, 'navItem')]/a[@title='%s']";

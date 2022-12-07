@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class DeleteOpportunityDialog extends OpportunitiesPage {
 
-    @FindBy(xpath = "//div[contains(@class, 'modal')]//h2[contains(text(),'Delete')]")
+    @FindBy(xpath = "//h2[contains(text(),'Delete')]")
     private WebElement deleteOpportunityConfirmDialog;
 
     @FindBy(xpath = "//*[contains(@class, 'footer')]//*[@title='Delete']")

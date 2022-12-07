@@ -3,7 +3,6 @@ package com.salesforce.framework.pages.opportunity;
 import com.salesforce.framework.enums.opportunity.FieldsNames;
 import com.salesforce.framework.models.Opportunity;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -14,7 +13,7 @@ import static com.salesforce.framework.enums.opportunity.FieldsNames.*;
 
 public class NewOpportunityPopup extends OpportunitiesPage{
 
-    @FindBy (xpath = "//*[contains(@class, 'modal')]//*[text()='New Opportunity']")
+    @FindBy (xpath = "//h2[text()='New Opportunity']")
     private WebElement newOpportunityModalWindow;
 
     @FindBy(xpath = "//button[@name='SaveEdit']")
@@ -32,23 +31,36 @@ public class NewOpportunityPopup extends OpportunitiesPage{
     @FindBy(xpath = "//*[contains(@class,'fieldLevelErrors')]")
     private WebElement formFieldErrorDialog;
 
-    @FindBy(xpath = "//label[text()='Stage']/following-sibling::div//*[@data-item-id]")
-    List<WebElement> stagesDropDownList;
+    @FindBy(xpath = "//*[@data-item-id]")
+    List<WebElement> picklistItems;
 
-    private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@role='option'][@data-value='%s']";
-    private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']/parent::*//*[contains(@id, 'input')]";
-    private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//ancestor::*[@name='inputField']//*[contains(@class, 'help')]";
-    private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/parent::*//button";
+    private static final String INPUT_FIELD = "//*[@name='inputField'][descendant::label[text()='%s']]";
+    private static final String INPUT_FIELD_TEXT_INPUT_FORMAT = INPUT_FIELD + "//input";
+    //private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']/parent::*//*[contains(@id, 'input')]";
+    private static final String INPUT_FIELD_TEXT_AREA_FORMAT = INPUT_FIELD + "//textarea";
+    private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = INPUT_FIELD + "//*[contains(@class,'help')]";
+    //private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//ancestor::*[@name='inputField']//*[contains(@class, 'help')]";
+    private static final String INPUT_FIELD_OPEN_PICKLIST_FORMAT = INPUT_FIELD + "//button";
+    //private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/parent::*//button";
+    private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@data-value='%s']";
 
     @Step("Enter '{1}' into {label.fieldLabel}")
     public NewOpportunityPopup enterValueIntoInputField(FieldsNames label, String value){
         String fieldLabel = label.getFieldLabel();
-        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_FORMAT, fieldLabel));
-        findElementByXpath(String.format(INPUT_FIELD_FORMAT, fieldLabel)).clear();
-        findElementByXpath(String.format(INPUT_FIELD_FORMAT, fieldLabel)).sendKeys(value);
+        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_TEXT_INPUT_FORMAT, fieldLabel));
+        findElementByXpath(String.format(INPUT_FIELD_TEXT_INPUT_FORMAT, fieldLabel)).clear();
+        findElementByXpath(String.format(INPUT_FIELD_TEXT_INPUT_FORMAT, fieldLabel)).sendKeys(value);
         return this;
     }
 
+    @Step("Enter '{1}' into {label.fieldLabel}")
+    public NewOpportunityPopup enterValueIntoTextAreaField(FieldsNames label, String value){
+        String fieldLabel = label.getFieldLabel();
+        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_TEXT_AREA_FORMAT, fieldLabel));
+        findElementByXpath(String.format(INPUT_FIELD_TEXT_AREA_FORMAT, fieldLabel)).clear();
+        findElementByXpath(String.format(INPUT_FIELD_TEXT_AREA_FORMAT, fieldLabel)).sendKeys(value);
+        return this;
+    }
 
     @Step("Enter '{0}' to field 'Opportunity Name'")
     public NewOpportunityPopup enterOpportunityName(String opportunityName){
@@ -64,8 +76,8 @@ public class NewOpportunityPopup extends OpportunitiesPage{
 
     @Step("Click on '{0}' picklist")
     public NewOpportunityPopup clickOnPicklist(String picklistLabel){
-        waitHelper().waitLocatorUntilVisible(String.format(PICKLIST_LABEL_FORMAT, picklistLabel));
-        findElementByXpath(String.format(PICKLIST_LABEL_FORMAT, picklistLabel)).click();
+        waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_OPEN_PICKLIST_FORMAT, picklistLabel));
+        findElementByXpath(String.format(INPUT_FIELD_OPEN_PICKLIST_FORMAT, picklistLabel)).click();
         return this;
     }
 
@@ -77,8 +89,8 @@ public class NewOpportunityPopup extends OpportunitiesPage{
     }
 
     public List<String> getValuesInStageDropDown(){
-        waitHelper().waitElementUntilVisible(stagesDropDownList.get(0));
-        return stagesDropDownList.stream()
+        waitHelper().waitElementUntilVisible(picklistItems.get(0));
+        return picklistItems.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
     }
@@ -157,13 +169,13 @@ public class NewOpportunityPopup extends OpportunitiesPage{
 
     @Step("Enter '{opportunity.mainCompetitor}'")
     public NewOpportunityPopup enterMainCompetitor(Opportunity opportunity){
-        enterValueIntoInputField(TRACKING_NUMBER, opportunity.getMainCompetitor());
+        enterValueIntoInputField(MAIN_COMPETITOR, opportunity.getMainCompetitor());
         return this;
     }
 
     @Step("Enter '{opportunity.description}'")
     public NewOpportunityPopup enterDescription(Opportunity opportunity){
-        enterValueIntoInputField(DESCRIPTION, opportunity.getDescription());
+        enterValueIntoTextAreaField(DESCRIPTION, opportunity.getDescription());
         return this;
     }
 
