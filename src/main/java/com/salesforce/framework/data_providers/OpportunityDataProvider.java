@@ -11,16 +11,16 @@ public class OpportunityDataProvider {
     private static final String TODAY_DATE = DateConvertorHelper.convertLocalDateToCivilianDateFormat(LocalDate.now());
 
     public Opportunity generateOpportunityRequiredFields(String opportunityName){
-        return Opportunity.newBuilder()
-                .setName(opportunityName)
-                .withStage(Stages.NEEDS_ANALYSIS.getStage())
-                .withCloseDate(TODAY_DATE)
-                .build();
+        return Opportunity.createNew(opportunityName, Stages.NEEDS_ANALYSIS.getStage(), TODAY_DATE).build();
     }
 
-    public Opportunity generateAllOpportunityFields(String opportunityName,double amount, String orderNumber,
-                                                    int probability, String trackingNumber, String description){
-        return generateOpportunityRequiredFields(opportunityName)
+    public Opportunity generateAllOpportunityFields(String opportunityName,
+                                                    double amount,
+                                                    String orderNumber,
+                                                    int probability,
+                                                    String trackingNumber,
+                                                    String description){
+        return Opportunity.createNew(opportunityName, Stages.NEEDS_ANALYSIS.getStage(), TODAY_DATE)
                 .setAmount(amount)
                 .setNextStep("Next Step")
                 .setOrderNumber(orderNumber)
@@ -31,19 +31,20 @@ public class OpportunityDataProvider {
                 .setCurrentGenerator("test")
                 .setMainCompetitor(MainCompetitors.COKE_COLA.getMainCompetitor())
                 .setDeliveryInstallationStatus(DeliveryStatuses.YET_TO_BEGIN.getStatus())
-                .setDescription(description);
+                .setDescription(description)
+                .build();
     }
 
     public Opportunity generateOpportunityWithoutNameField(){
-        return Opportunity.newBuilder()
-                .withStage(Stages.NEEDS_ANALYSIS.getStage())
-                .withCloseDate(TODAY_DATE)
+        return new Opportunity.Builder()
+                .setStage(Stages.NEEDS_ANALYSIS.getStage())
+                .setCloseDate(TODAY_DATE)
                 .build();
     }
 
-    public Opportunity generateOpportunityWithoutRequiredFields(String opportunityName){
-        return Opportunity.newBuilder()
-                .setName(opportunityName)
-                .build();
+    public Opportunity generateOpportunityWithTrackingNumber(String opportunityName, String trackingNumber){
+        return Opportunity.createNew(opportunityName, Stages.NEEDS_ANALYSIS.getStage(), TODAY_DATE)
+                .setTrackingNumber(trackingNumber).
+                build();
     }
 }

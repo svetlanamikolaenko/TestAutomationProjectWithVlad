@@ -8,6 +8,8 @@ import com.salesforce.tests.BaseTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.salesforce.framework.enums.opportunity.FieldsNames.TRACKING_NUMBER;
+
 
 public class EditOpportunityTest extends BaseTest {
     private Opportunity opportunity;
@@ -19,17 +21,17 @@ public class EditOpportunityTest extends BaseTest {
 
     @BeforeClass
     public void setOpportunity() {
-        opportunity = dataProvider.generateOpportunityRequiredFields(OPPORTUNITY_NAME);
+        opportunity = dataProvider.generateOpportunityWithTrackingNumber(OPPORTUNITY_NAME, TRACKING_NUMBER);
         detailsPage = BROWSER.loginAs(Customers.TEST_USER.getCustomer())
                 .openOpportunityTab()
                 .clickOnNewButton()
                 .enterAllRequiredFields(opportunity)
-                .enterTrackingNumber(opportunity.setTrackingNumber(TRACKING_NUMBER))
+                .enterTrackingNumber(opportunity)
                 .saveOpportunity();
     }
 
     @Test
-    public void verifyEditOpportunity() throws InterruptedException {
+    public void verifyEditOpportunity() {
         detailsPage = detailsPage
                 .openOpportunityTab()
                 .openOpportunityEditPopup(opportunity)
