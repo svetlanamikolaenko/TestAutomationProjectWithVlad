@@ -92,6 +92,9 @@ public class Opportunity {
     public static Builder createNew(String name, String stage, String closeDate) {
         return new Builder(name, stage, closeDate);
     }
+    public static Builder createNew() {
+        return new Builder();
+    }
 
     public static final class Builder {
         private String name;
@@ -109,13 +112,13 @@ public class Opportunity {
         private String deliveryInstallationStatus;
         private String description;
 
-        public Builder(String name, String stage, String closeDate) {
+        private Builder(String name, String stage, String closeDate) {
             this.name = name;
             this.stage = stage;
             this.closeDate = closeDate;
         }
 
-        public Builder() {
+        private Builder() {
 
         }
 

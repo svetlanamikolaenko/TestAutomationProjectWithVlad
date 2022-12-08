@@ -36,7 +36,7 @@ public class OpportunityDataProvider {
     }
 
     public Opportunity generateOpportunityWithoutNameField(){
-        return new Opportunity.Builder()
+        return Opportunity.createNew()
                 .setStage(Stages.NEEDS_ANALYSIS.getStage())
                 .setCloseDate(TODAY_DATE)
                 .build();

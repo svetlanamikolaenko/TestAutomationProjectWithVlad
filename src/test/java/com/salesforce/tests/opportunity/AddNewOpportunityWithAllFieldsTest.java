@@ -25,7 +25,8 @@ public class AddNewOpportunityWithAllFieldsTest extends BaseTest {
 
     @BeforeClass
         public void setOpportunity() {
-        opportunityAll = dataProvider.generateAllOpportunityFields(OPPORTUNITY_NAME,
+        opportunityAll = dataProvider.generateAllOpportunityFields(
+                OPPORTUNITY_NAME,
                 AMOUNT_VALUE,
                 ORDER_NUMBER_VALUE,
                 PROBABILITY_VALUE,
@@ -44,12 +45,12 @@ public class AddNewOpportunityWithAllFieldsTest extends BaseTest {
                 .enterAmount(opportunityAll)
                 .enterNextStep(opportunityAll)
                 .enterOrderNumber(opportunityAll)
-                .selectValueInPicklist(TYPE, opportunityAll.getType())
-                .selectValueInPicklist(LEAD_SOURCE, opportunityAll.getLeadSource())
+                .selectType(opportunityAll)
+                .selectLeadSource(opportunityAll)
                 .enterProbability(opportunityAll)
                 .enterTrackingNumber(opportunityAll)
                 .enterCurrentGenerator(opportunityAll)
-                .selectValueInPicklist(DELIVERY_STATUS, opportunityAll.getDeliveryInstallationStatus())
+                .selectDeliveryStatus(opportunityAll)
                 .enterMainCompetitor(opportunityAll)
                 .enterDescription(opportunityAll)
                 .saveOpportunity()
