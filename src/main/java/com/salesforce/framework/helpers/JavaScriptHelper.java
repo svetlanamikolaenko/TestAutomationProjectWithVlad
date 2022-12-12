@@ -20,6 +20,18 @@ public class JavaScriptHelper {
                 element);
     }
 
+    public void scrollToBottom() {
+        ((JavascriptExecutor) Browser.getWebDriver()).executeScript("scrollBy(0,document.body.scrollHeight || document.documentElement.scrollHeight)", "");
+    }
+
+    public void scrollToTop() {
+        ((JavascriptExecutor) Browser.getWebDriver()).executeScript("scrollBy(0,-document.body.scrollHeight || -document.documentElement.scrollHeight)", "");
+    }
+
+    public void refreshBrowser() {
+        ((JavascriptExecutor) Browser.getWebDriver()).executeScript("location.reload()");
+    }
+
     public void clearLocalStorageJS() {
         ((JavascriptExecutor) Browser.getWebDriver()).executeScript("window.localStorage.clear()");
     }

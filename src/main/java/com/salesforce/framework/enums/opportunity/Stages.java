@@ -1,6 +1,6 @@
-package com.salesforce.framework.enums;
+package com.salesforce.framework.enums.opportunity;
 
-public enum OpportunityStages {
+public enum Stages {
 
     PROSPECTING("Prospecting"),
     QUALIFICATION("Qualification"),
@@ -15,7 +15,7 @@ public enum OpportunityStages {
 
     private final String stage;
 
-    OpportunityStages(String stage) {
+    Stages(String stage) {
         this.stage = stage;
     }
 

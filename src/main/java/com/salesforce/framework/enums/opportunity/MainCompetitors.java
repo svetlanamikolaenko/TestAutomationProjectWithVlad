@@ -1,4 +1,4 @@
-package com.salesforce.framework.enums;
+package com.salesforce.framework.enums.opportunity;
 
 import java.util.List;
 

@@ -3,48 +3,26 @@ package com.salesforce.tests;
 import com.github.javafaker.Faker;
 import com.salesforce.framework.browser.Browser;
 import com.salesforce.framework.data_providers.OpportunityDataProvider;
-import com.salesforce.framework.enums.Customers;
-import com.salesforce.framework.helpers.JavaScriptHelper;
-import com.salesforce.framework.helpers.WebDriverWaitHelper;
-import com.salesforce.framework.models.Customer;
-import com.salesforce.framework.pages.LoginPage;
-import com.salesforce.framework.pages.SetupHomePage;
-import org.openqa.selenium.WebDriver;
+
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
+import static com.salesforce.framework.browser.Browser.closeWebDriver;
+
 public abstract class BaseTest {
-    protected WebDriver driver;
-    protected JavaScriptHelper javaScriptHelper;
-    protected WebDriverWaitHelper webDriverWaitHelper;
-    protected SoftAssert softAssert;
-    protected LoginPage loginPage;
-    protected SetupHomePage setupHomePage;
-    public static Faker faker = new Faker();
-    protected Customer customer;
-    protected OpportunityDataProvider dataProvider;
+    protected static final Browser BROWSER = new Browser();
+    protected static SoftAssert softAssert;
+    protected static OpportunityDataProvider dataProvider;
+    protected static Faker faker = new Faker();
 
-
-    @BeforeSuite
-    public void setupDriver() {
-        driver = Browser.getWebDriver();
-        webDriverWaitHelper = new WebDriverWaitHelper();
-        javaScriptHelper = new JavaScriptHelper();
+    @BeforeSuite(alwaysRun = true)
+    public void setDriver() {
         softAssert = new SoftAssert();
-    }
-
-    @BeforeClass
-    public void setLoginPage() {
-        customer= Customers.TEST_USER.getCustomer();
         dataProvider = new OpportunityDataProvider();
-        loginPage = new LoginPage();
-        loginPage = loginPage.openLoginPage();
-        setupHomePage = loginPage.loginAs(customer);
     }
 
     @AfterSuite(alwaysRun = true)
-    public void closeSite() {
-        javaScriptHelper.clearLocalStorageJS();
-        Browser.closeWebDriver();
+    public void closeDriver() {
+        closeWebDriver();
     }
 }

@@ -6,7 +6,7 @@ public class Customer {
     private String name;
     private String lastName;
 
-    public Customer() {
+    private Customer() {
 
     }
 
@@ -26,7 +26,7 @@ public class Customer {
         return lastName;
     }
 
-    public Customer(final Builder builder) {
+    private Customer(final Builder builder) {
         this.email = builder.email;
         this.password = builder.password;
         this.name = builder.name;
