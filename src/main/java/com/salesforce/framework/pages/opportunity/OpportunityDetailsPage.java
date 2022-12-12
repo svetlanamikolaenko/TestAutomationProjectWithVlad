@@ -7,18 +7,8 @@ import org.openqa.selenium.support.FindBy;
 
 public class OpportunityDetailsPage extends OpportunityHeaderPage {
 
-
-    //private final static String OPPORTUNITY_FIELD_VALUE_FORMAT = "//*[text()='%s']//ancestor::div[contains(@class,'element_edit')]//*[contains(@class,'field-value')]";
     private final static String OPPORTUNITY_FIELD_FORMAT = "//*[contains(@class,'edit')][descendant::*[text()='%s']]";
     private final static String OPPORTUNITY_FIELD_VALUE_FORMAT = OPPORTUNITY_FIELD_FORMAT + "//*[contains(@class,'field-value')]";
-
-    /**
-     * Just an example for creation OPPORTUNITY_FIELD_EDIT_BUTTON_FORMAT
-     * there's no usage, I'll remove it after discussion.
-     */
-    //@FindBy(xpath = "//*[text()='Opportunity Name']//parent::div//following-sibling::div//*[contains(@class, 'field-value')]//following-sibling::button/*[contains(@class,'icon')]")
-    //private WebElement opportunityNameEditButton;
-    private final static String OPPORTUNITY_FIELD_EDIT_BUTTON_FORMAT = OPPORTUNITY_FIELD_FORMAT + "//button";
 
     @Step("Get the '{label.fieldLabel}' field value")
     public String getOpportunityFieldValue(FieldsNames label) {

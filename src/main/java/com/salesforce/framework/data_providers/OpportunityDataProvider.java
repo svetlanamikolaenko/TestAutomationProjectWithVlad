@@ -10,7 +10,7 @@ public class OpportunityDataProvider {
 
     private static final String TODAY_DATE = DateConvertorHelper.convertLocalDateToCivilianDateFormat(LocalDate.now());
 
-    public Opportunity generateOpportunityRequiredFields(String opportunityName){
+    public Opportunity generateOpportunityRequiredFields(String opportunityName) {
         return Opportunity.createNew(opportunityName, Stages.NEEDS_ANALYSIS.getStage(), TODAY_DATE).build();
     }
 
@@ -19,7 +19,7 @@ public class OpportunityDataProvider {
                                                     String orderNumber,
                                                     int probability,
                                                     String trackingNumber,
-                                                    String description){
+                                                    String description) {
         return Opportunity.createNew(opportunityName, Stages.NEEDS_ANALYSIS.getStage(), TODAY_DATE)
                 .setAmount(amount)
                 .setNextStep("Next Step")
@@ -35,14 +35,14 @@ public class OpportunityDataProvider {
                 .build();
     }
 
-    public Opportunity generateOpportunityWithoutNameField(){
+    public Opportunity generateOpportunityWithoutNameField() {
         return Opportunity.createNew()
                 .setStage(Stages.NEEDS_ANALYSIS.getStage())
                 .setCloseDate(TODAY_DATE)
                 .build();
     }
 
-    public Opportunity generateOpportunityWithTrackingNumber(String opportunityName, String trackingNumber){
+    public Opportunity generateOpportunityWithTrackingNumber(String opportunityName, String trackingNumber) {
         return Opportunity.createNew(opportunityName, Stages.NEEDS_ANALYSIS.getStage(), TODAY_DATE)
                 .setTrackingNumber(trackingNumber).
                 build();

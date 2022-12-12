@@ -5,6 +5,7 @@ import com.salesforce.framework.models.Opportunity;
 import com.salesforce.framework.pages.HomePage;
 import com.salesforce.tests.BaseTest;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -17,7 +18,7 @@ public class HomeRecentRecordsTest extends BaseTest {
     private Opportunity opportunity;
     private HomePage homePage;
 
-    @BeforeMethod
+    @BeforeClass
     public void setOpportunity() {
         opportunity = dataProvider.generateOpportunityRequiredFields(OPPORTUNITY_RECORD_NAME);
         homePage = BROWSER

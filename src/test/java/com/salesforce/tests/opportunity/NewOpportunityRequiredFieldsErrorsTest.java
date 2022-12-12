@@ -30,8 +30,8 @@ public class NewOpportunityRequiredFieldsErrorsTest extends BaseTest {
     public void verifyErrorMessageIsDisplayedWhenEmptyRequiredFieldTest() {
         newOpportunityPopup = opportunitiesPage
                 .clickOnNewButton()
-                .selectValueInPicklist(STAGE, opportunity.getStage())
-                .enterValueIntoInputField(CLOSE_DATE, opportunity.getCloseDate())
+                .selectStage(opportunity)
+                .enterCloseDate(opportunity)
                 .clickOnSaveButton();
 
         softAssert.assertTrue(newOpportunityPopup.isFormPageErrorDialogDisplayed(),

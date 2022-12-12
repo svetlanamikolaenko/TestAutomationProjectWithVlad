@@ -36,12 +36,9 @@ public class NewOpportunityPopup extends OpportunitiesPage {
 
     private static final String INPUT_FIELD = "//*[@name='inputField'][descendant::label[text()='%s']]";
     private static final String INPUT_FIELD_TEXT_INPUT_FORMAT = INPUT_FIELD + "//input";
-    //private static final String INPUT_FIELD_FORMAT = "//label[text()='%s']/parent::*//*[contains(@id, 'input')]";
     private static final String INPUT_FIELD_TEXT_AREA_FORMAT = INPUT_FIELD + "//textarea";
     private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = INPUT_FIELD + "//*[contains(@class,'help')]";
-    //private static final String INPUT_FIELD_ERROR_MESSAGE_FORMAT = "//label[text()='%s']//ancestor::*[@name='inputField']//*[contains(@class, 'help')]";
     private static final String INPUT_FIELD_OPEN_PICKLIST_FORMAT = INPUT_FIELD + "//button";
-    //private static final String PICKLIST_LABEL_FORMAT ="//label[text()='%s']/parent::*//button";
     private static final String VALUE_IN_PICKLIST_FORMAT = "//*[@data-value='%s']";
 
     @Step("Enter '{1}' into {label.fieldLabel}")
@@ -54,12 +51,11 @@ public class NewOpportunityPopup extends OpportunitiesPage {
     }
 
     @Step("Enter '{1}' into {label.fieldLabel}")
-    public NewOpportunityPopup enterValueIntoTextAreaField(FieldsNames label, String value) {
+    public void enterValueIntoTextAreaField(FieldsNames label, String value) {
         String fieldLabel = label.getFieldLabel();
         waitHelper().waitLocatorUntilVisible(String.format(INPUT_FIELD_TEXT_AREA_FORMAT, fieldLabel));
         findElementByXpath(String.format(INPUT_FIELD_TEXT_AREA_FORMAT, fieldLabel)).clear();
         findElementByXpath(String.format(INPUT_FIELD_TEXT_AREA_FORMAT, fieldLabel)).sendKeys(value);
-        return this;
     }
 
     @Step("Enter '{opportunity.name}''")
@@ -82,10 +78,9 @@ public class NewOpportunityPopup extends OpportunitiesPage {
     }
 
     @Step("Choose '{0}' option in picklist")
-    public NewOpportunityPopup chooseOptionInPicklist(String option) {
+    public void chooseOptionInPicklist(String option) {
         waitHelper().waitLocatorUntilVisible(String.format(VALUE_IN_PICKLIST_FORMAT, option));
         jsHelper().clickJS(findElementByXpath(String.format(VALUE_IN_PICKLIST_FORMAT, option)));
-        return this;
     }
 
     public List<String> getValuesInStageDropDown() {
@@ -105,7 +100,7 @@ public class NewOpportunityPopup extends OpportunitiesPage {
     @Step("Enter '{opportunity.stage}'")
     public NewOpportunityPopup selectStage(Opportunity opportunity) {
         selectValueInPicklist(STAGE, opportunity.getStage());
-    return this;
+        return this;
     }
 
     @Step("Click on 'Save' button")
